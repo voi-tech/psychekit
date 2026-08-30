@@ -1,0 +1,27 @@
+---
+import "@/styles/global.css";
+const { title = "PsycheKit", description = "Privacy-first silnik samoopisowych kwestionariuszy.", noindex = false } = Astro.props;
+---
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{title} · PsycheKit</title>
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex,nofollow" />}
+    <link rel="manifest" href="/manifest.webmanifest" />
+  </head>
+  <body>
+    <header><div class="shell"><nav aria-label="Główna nawigacja">
+      <strong><a href="/">PsycheKit</a></strong>
+      <a href="/o-projekcie">O projekcie</a>
+      <a href="/prywatnosc">Prywatność</a>
+      <a href="/licencje">Licencje</a>
+      <a href="/historia">Historia</a>
+    </nav></div></header>
+    <main><div class="shell"><slot /></div></main>
+    <footer><div class="shell">Przetwarzanie odpowiedzi odbywa się lokalnie w przeglądarce. <a href="/prywatnosc">Dowiedz się więcej o prywatności.</a></div></footer>
+    <script is:inline src="/register-sw.js" defer></script>
+  </body>
+</html>

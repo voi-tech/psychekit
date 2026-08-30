@@ -1,0 +1,16 @@
+id: audit-pending
+class: noncommercial
+status: pending
+holder: World Health Organization
+source: https://www.who.int/publications/i/item/WHO-MSD-MSB-01.6a
+verifiedAt: "2026-08-30"
+permissions:
+  redistribution: false
+  modification: false
+  translation: false
+  commercialUse: false
+  electronicAdministration: false
+translation:
+  type: none
+  language: pl
+notes: "Zablokowany: brak jednoznacznego potwierdzenia wymaganej redystrybucji online i praw do polskiego tłumaczenia. Nie jest używany przez instrument produkcyjny."

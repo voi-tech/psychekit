@@ -1,0 +1,6 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+const licenses = await getCollection("licencje");
+---
+<BaseLayout title="Licencje"><div class="hero"><p class="eyebrow">Jawne źródła</p><h1>Licencje instrumentów</h1><p>Każdy instrument produkcyjny ma osobny rekord licencji. Status pending nie dopuszcza instrumentu do kolekcji produkcyjnej.</p></div><div class="cards">{licenses.map((entry) => <article class="card"><h2>{entry.data.id}</h2><p><strong>Klasa:</strong> {entry.data.class}</p><p><strong>Status:</strong> {entry.data.status}</p><p><strong>Właściciel:</strong> {entry.data.holder}</p><p><strong>Weryfikacja:</strong> {entry.data.verifiedAt}</p><p><strong>Tłumaczenie:</strong> {entry.data.translation.type} ({entry.data.translation.language})</p><a href={entry.data.source}>Źródło pierwotne</a>{entry.data.notes && <p class="meta">{entry.data.notes}</p>}</article>)}</div></BaseLayout>

@@ -1,0 +1,17 @@
+id: gad-unrestricted
+class: unrestricted
+status: verified
+holder: Robert L. Spitzer, Janet B.W. Williams, Kurt Kroenke, Bernd Löwe i współpracownicy; Pfizer Inc.
+source: https://www.phqscreeners.com/select-screener
+verifiedAt: "2026-08-30"
+permissions:
+  redistribution: true
+  modification: false
+  translation: true
+  commercialUse: true
+  electronicAdministration: true
+translation:
+  type: official
+  language: pl
+  source: https://www.phqscreeners.com/images/sites/g/files/g10060481/f/201412/GAD7_Polish%20for%20Poland.pdf
+notes: "Oficjalny portal wskazuje polską wersję Polish for Poland i brak wymogu zgody na reprodukcję, tłumaczenie, wyświetlanie ani dystrybucję."
