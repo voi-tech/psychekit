@@ -1,15 +1,16 @@
 {
   "name": "psychekit",
-  "version": "26.8.0",
+  "version": "26.8.1",
   "private": true,
   "type": "module",
   "scripts": {
     "dev": "astro dev",
+    "check": "astro check",
     "test": "vitest run",
     "validate-content": "tsx scripts/validate-content.ts",
-    "build": "pnpm validate-content && astro build",
+    "build": "pnpm validate-content && astro build && tsx scripts/build-headers.ts",
     "test:e2e": "playwright test",
-    "verify": "pnpm test && pnpm build && pnpm test:e2e"
+    "verify": "pnpm check && pnpm test && pnpm build && pnpm test:e2e"
   },
   "dependencies": {
     "@astrojs/react": "^5.0.0",

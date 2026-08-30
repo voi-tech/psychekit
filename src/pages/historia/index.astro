@@ -2,4 +2,6 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import HistoryView from "@/components/HistoryView";
 ---
-<BaseLayout title="Historia wyników" noindex={true}><HistoryView client:load /></BaseLayout>
+<BaseLayout title="Historia" description="Wyniki zapisane na tym urządzeniu." noindex={true}>
+  <HistoryView client:load />
+</BaseLayout>

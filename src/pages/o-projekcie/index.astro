@@ -1,4 +1,24 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 ---
-<BaseLayout title="O projekcie"><div class="hero"><p class="eyebrow">PsycheKit</p><h1>Przejrzysty silnik samoopisów.</h1><p>PsycheKit jest privacy-first aplikacją bez kont, backendu, synchronizacji i analityki odpowiedzi. Scoring znajduje się w danych instrumentu i jest wykonywany lokalnie.</p></div><section class="panel"><h2>Granice</h2><ul><li>To nie jest narzędzie diagnostyczne ani system kliniczny.</li><li>Nie wysyłamy wyników do dostawcy AI.</li><li>Nie przechowujemy ukończonych wyników bez świadomej zgody.</li><li>Instrumenty proprietary są wykluczone.</li></ul></section></BaseLayout>
+<BaseLayout title="O projekcie" description="Do czego służy PsycheKit i gdzie leżą granice jego zastosowania.">
+  <div class="hero">
+    <h1>O projekcie</h1>
+    <p>PsycheKit udostępnia kwestionariusze samoopisowe, które liczą wynik w przeglądarce. Nie ma kont, serwera odpowiedzi, synchronizacji ani pomiaru zachowań użytkowników. Sposób liczenia wyniku jest zapisany razem z treścią kwestionariusza.</p>
+  </div>
+
+  <section class="panel">
+    <h2>Czego PsycheKit nie robi</h2>
+    <ul>
+      <li>Nie stawia diagnozy i nie jest narzędziem stosowanym w opiece zdrowotnej.</li>
+      <li>Nie wysyła Twoich odpowiedzi ani wyników do żadnej usługi zewnętrznej.</li>
+      <li>Nie zapisuje ukończonego wyniku, dopóki tego nie wybierzesz.</li>
+      <li>Nie udostępnia narzędzi, na które nie ma potwierdzonych praw.</li>
+    </ul>
+  </section>
+
+  <section class="panel">
+    <h2>Skąd pochodzą kwestionariusze</h2>
+    <p>Każdy kwestionariusz ma osobny opis praw do jego treści oraz odnośnik do źródła. Warunki korzystania z każdego z nich znajdziesz na stronie <a href="/licencje/">Licencje</a>.</p>
+  </section>
+</BaseLayout>

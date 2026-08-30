@@ -1,7 +1,7 @@
 id: audit-pending
 class: noncommercial
 status: pending
-holder: World Health Organization
+holder: Światowa Organizacja Zdrowia
 source: https://www.who.int/publications/i/item/WHO-MSD-MSB-01.6a
 verifiedAt: "2026-08-30"
 permissions:
@@ -13,4 +13,4 @@ permissions:
 translation:
   type: none
   language: pl
-notes: "Zablokowany: brak jednoznacznego potwierdzenia wymaganej redystrybucji online i praw do polskiego tłumaczenia. Nie jest używany przez instrument produkcyjny."
+notes: "Wstrzymany: nie udało się jednoznacznie potwierdzić prawa do udostępniania tego narzędzia w internecie ani praw do polskiego tłumaczenia. Żaden udostępniany kwestionariusz z niego nie korzysta."

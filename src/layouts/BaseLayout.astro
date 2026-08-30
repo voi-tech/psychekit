@@ -1,6 +1,17 @@
 ---
 import "@/styles/global.css";
-const { title = "PsycheKit", description = "Privacy-first silnik samoopisowych kwestionariuszy.", noindex = false } = Astro.props;
+
+interface Props { title?: string; description?: string; noindex?: boolean }
+const { title = "PsycheKit", description = "Kwestionariusze samoopisowe liczone w Twojej przeglądarce.", noindex = false } = Astro.props;
+
+const links = [
+  { href: "/", label: "Kwestionariusze" },
+  { href: "/historia/", label: "Historia" },
+  { href: "/licencje/", label: "Licencje" },
+  { href: "/prywatnosc/", label: "Prywatność" },
+  { href: "/o-projekcie/", label: "O projekcie" },
+];
+const current = Astro.url.pathname.replace(/\/+$/, "") || "/";
 ---
 <!doctype html>
 <html lang="pl">
@@ -11,17 +22,31 @@ const { title = "PsycheKit", description = "Privacy-first silnik samoopisowych k
     <meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex,nofollow" />}
     <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <script is:inline src="/motyw.js"></script>
   </head>
   <body>
-    <header><div class="shell"><nav aria-label="Główna nawigacja">
-      <strong><a href="/">PsycheKit</a></strong>
-      <a href="/o-projekcie">O projekcie</a>
-      <a href="/prywatnosc">Prywatność</a>
-      <a href="/licencje">Licencje</a>
-      <a href="/historia">Historia</a>
-    </nav></div></header>
-    <main><div class="shell"><slot /></div></main>
-    <footer><div class="shell">Przetwarzanie odpowiedzi odbywa się lokalnie w przeglądarce. <a href="/prywatnosc">Dowiedz się więcej o prywatności.</a></div></footer>
+    <a class="pomin" href="#tresc">Przejdź do treści</a>
+    <header>
+      <div class="shell">
+        <nav aria-label="Nawigacja główna">
+          <strong><a href="/">PsycheKit</a></strong>
+          {links.map((link) => (
+            <a href={link.href} aria-current={(link.href.replace(/\/+$/, "") || "/") === current ? "page" : undefined}>{link.label}</a>
+          ))}
+          <div class="motyw">
+            <label for="wybor-motywu">Wygląd</label>
+            <select id="wybor-motywu">
+              <option value="auto">Jak w systemie</option>
+              <option value="light">Jasny</option>
+              <option value="dark">Ciemny</option>
+            </select>
+          </div>
+        </nav>
+      </div>
+    </header>
+    <main id="tresc"><div class="shell"><slot /></div></main>
+    <footer><div class="shell">Odpowiedzi są przetwarzane w Twojej przeglądarce. <a href="/prywatnosc/">Zasady prywatności</a></div></footer>
     <script is:inline src="/register-sw.js" defer></script>
   </body>
 </html>

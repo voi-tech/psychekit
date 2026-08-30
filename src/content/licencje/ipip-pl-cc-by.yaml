@@ -1,0 +1,18 @@
+id: ipip-pl-cc-by
+class: attribution
+status: verified
+holder: Ewa Topolewska, Ewa Skimina, Włodzimierz Strus, Jan Cieciuch, Tomasz Rowiński; Uniwersytet Kardynała Stefana Wyszyńskiego w Warszawie
+source: https://www.ipip.uksw.edu.pl/test.php?id=31
+verifiedAt: "2026-08-30"
+permissions:
+  redistribution: true
+  modification: true
+  translation: true
+  commercialUse: true
+  electronicAdministration: true
+translation:
+  type: adaptation
+  language: pl
+  source: https://www.ipip.uksw.edu.pl/test.php?id=31
+attribution: "Polska wersja IPIP-BFM-20: Topolewska, Skimina, Strus, Cieciuch, Rowiński (2014), www.ipip.edu.pl"
+notes: "Serwis udostępnia polskie wersje narzędzi IPIP bezpłatnie na warunkach Creative Commons Uznanie autorstwa, bez konieczności uzyskiwania zgody, z obowiązkiem wskazania źródła www.ipip.edu.pl. Brzmienie pozycji dostosowano gramatycznie do wybranej formy męskiej albo żeńskiej, dlatego typ tłumaczenia oznaczono jako adaptację."

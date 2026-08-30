@@ -1,58 +1,64 @@
 ---
 id: ipip-bfm-20
 title: IPIP-BFM-20
-subtitle: Krótki samoopis Wielkiej Piątki — wersja źródłowa angielska
-language: en
-definitionVersion: 1.0.0
+subtitle: Krótki opis pięciu cech osobowości
+language: pl
+definitionVersion: 2.0.0
 estimatedMinutes: 4
-license: ipip-public-domain
-disclaimer: To samoopisowy pomiar cech osobowości, a nie diagnoza ani ocena kliniczna.
+license: ipip-pl-cc-by
+attribution: "Polska wersja IPIP-BFM-20: Topolewska, Skimina, Strus, Cieciuch, Rowiński (2014), www.ipip.edu.pl"
+adaptationNotice: "Brzmienie stwierdzeń dostosowano gramatycznie do wybranej formy. To nie jest oficjalna wersja narzędzia."
+disclaimer: To jest opis własnych cech, a nie diagnoza ani ocena psychologiczna.
 sources:
-  - https://ipip.ori.org/MiniIPIPKey.htm
-  - https://ipip.ori.org/newPermission.htm
+  - https://www.ipip.uksw.edu.pl/test.php?id=31
+  - https://ojs.tnkul.pl/index.php/rpsych/article/view/513
 optionSets:
-  likert:
-    id: likert
+  trafnosc:
+    id: trafnosc
     options:
-      - { id: very-inaccurate, score: 1, label: "Zdecydowanie nieprawdziwe" }
-      - { id: moderately-inaccurate, score: 2, label: "Raczej nieprawdziwe" }
-      - { id: neither, score: 3, label: "Ani prawdziwe, ani nieprawdziwe" }
-      - { id: moderately-accurate, score: 4, label: "Raczej prawdziwe" }
-      - { id: very-accurate, score: 5, label: "Zdecydowanie prawdziwe" }
+      - { id: calkowicie-nietrafnie, score: 1, label: "Całkowicie nietrafnie mnie opisuje" }
+      - { id: raczej-nietrafnie, score: 2, label: "Raczej nietrafnie mnie opisuje" }
+      - { id: posrednio, score: 3, label: "Trochę trafnie, a trochę nietrafnie mnie opisuje" }
+      - { id: raczej-trafnie, score: 4, label: "Raczej trafnie mnie opisuje" }
+      - { id: calkowicie-trafnie, score: 5, label: "Całkowicie trafnie mnie opisuje" }
 items:
-  - { id: q1, text: "Am the life of the party.", optionSet: likert }
-  - { id: q2, text: "Talk to a lot of different people at parties.", optionSet: likert }
-  - { id: q3, text: "Don't talk a lot.", optionSet: likert, reversed: true }
-  - { id: q4, text: "Keep in the background.", optionSet: likert, reversed: true }
-  - { id: q5, text: "Sympathize with others' feelings.", optionSet: likert }
-  - { id: q6, text: "Feel others' emotions.", optionSet: likert }
-  - { id: q7, text: "Am not really interested in others.", optionSet: likert, reversed: true }
-  - { id: q8, text: "Am not interested in other people's problems.", optionSet: likert, reversed: true }
-  - { id: q9, text: "Get chores done right away.", optionSet: likert }
-  - { id: q10, text: "Like order.", optionSet: likert }
-  - { id: q11, text: "Often forget to put things back in their proper place.", optionSet: likert, reversed: true }
-  - { id: q12, text: "Make a mess of things.", optionSet: likert, reversed: true }
-  - { id: q13, text: "Have frequent mood swings.", optionSet: likert, reversed: true }
-  - { id: q14, text: "Get upset easily.", optionSet: likert, reversed: true }
-  - { id: q15, text: "Am relaxed most of the time.", optionSet: likert }
-  - { id: q16, text: "Seldom feel blue.", optionSet: likert }
-  - { id: q17, text: "Have a vivid imagination.", optionSet: likert }
-  - { id: q18, text: "Have difficulty understanding abstract ideas.", optionSet: likert, reversed: true }
-  - { id: q19, text: "Am not interested in abstract ideas.", optionSet: likert, reversed: true }
-  - { id: q20, text: "Do not have a good imagination.", optionSet: likert, reversed: true }
+  - { id: q1, text: "Jestem duszą towarzystwa.", optionSet: trafnosc }
+  - { id: q2, text: "Niezbyt obchodzą mnie inni ludzie.", optionSet: trafnosc, reversed: true }
+  - { id: q3, text: "Zostawiam moje rzeczy gdzie popadnie.", optionSet: trafnosc, reversed: true }
+  - { id: q4, text: { m: "Zwykle jestem zrelaksowany.", f: "Zwykle jestem zrelaksowana." }, optionSet: trafnosc }
+  - { id: q5, text: "Mam bogate słownictwo.", optionSet: trafnosc }
+  - { id: q6, text: "Trzymam się z boku.", optionSet: trafnosc, reversed: true }
+  - { id: q7, text: { m: "Jestem wyrozumiały dla uczuć innych ludzi.", f: "Jestem wyrozumiała dla uczuć innych ludzi." }, optionSet: trafnosc }
+  - { id: q8, text: "Bez zwłoki wypełniam codzienne obowiązki.", optionSet: trafnosc }
+  - { id: q9, text: "Często martwię się czymś.", optionSet: trafnosc, reversed: true }
+  - { id: q10, text: "Mam trudności ze zrozumieniem abstrakcyjnych pojęć.", optionSet: trafnosc, reversed: true }
+  - { id: q11, text: "Rozmawiam z wieloma różnymi ludźmi na przyjęciach.", optionSet: trafnosc }
+  - { id: q12, text: "Nie interesują mnie problemy innych ludzi.", optionSet: trafnosc, reversed: true }
+  - { id: q13, text: "Często zapominam odkładać rzeczy na miejsce.", optionSet: trafnosc, reversed: true }
+  - { id: q14, text: { m: "Rzadko czuję się przygnębiony.", f: "Rzadko czuję się przygnębiona." }, optionSet: trafnosc }
+  - { id: q15, text: "Mam głowę pełną pomysłów.", optionSet: trafnosc }
+  - { id: q16, text: { m: "Wśród nieznajomych jestem małomówny.", f: "Wśród nieznajomych jestem małomówna." }, optionSet: trafnosc, reversed: true }
+  - { id: q17, text: "Znajduję czas dla innych.", optionSet: trafnosc }
+  - { id: q18, text: "Postępuję zgodnie z harmonogramem.", optionSet: trafnosc }
+  - { id: q19, text: "Często miewam huśtawki nastrojów.", optionSet: trafnosc, reversed: true }
+  - { id: q20, text: "Nie mam zbyt bogatej wyobraźni.", optionSet: trafnosc, reversed: true }
 scales:
-  - { id: extraversion, title: "Ekstrawersja", aggregation: sum, items: [q1, q2, q3, q4], range: { min: 4, max: 20 }, bands: [{ min: 4, max: 9, label: "Niższy zakres" }, { min: 10, max: 14, label: "Środkowy zakres" }, { min: 15, max: 20, label: "Wyższy zakres" }] }
-  - { id: agreeableness, title: "Ugodowość", aggregation: sum, items: [q5, q6, q7, q8], range: { min: 4, max: 20 }, bands: [{ min: 4, max: 9, label: "Niższy zakres" }, { min: 10, max: 14, label: "Środkowy zakres" }, { min: 15, max: 20, label: "Wyższy zakres" }] }
-  - { id: conscientiousness, title: "Sumienność", aggregation: sum, items: [q9, q10, q11, q12], range: { min: 4, max: 20 }, bands: [{ min: 4, max: 9, label: "Niższy zakres" }, { min: 10, max: 14, label: "Środkowy zakres" }, { min: 15, max: 20, label: "Wyższy zakres" }] }
-  - { id: emotional-stability, title: "Stabilność emocjonalna", aggregation: sum, items: [q13, q14, q15, q16], range: { min: 4, max: 20 }, bands: [{ min: 4, max: 9, label: "Niższy zakres" }, { min: 10, max: 14, label: "Środkowy zakres" }, { min: 15, max: 20, label: "Wyższy zakres" }] }
-  - { id: intellect, title: "Intelekt / wyobraźnia", aggregation: sum, items: [q17, q18, q19, q20], range: { min: 4, max: 20 }, bands: [{ min: 4, max: 9, label: "Niższy zakres" }, { min: 10, max: 14, label: "Środkowy zakres" }, { min: 15, max: 20, label: "Wyższy zakres" }] }
+  - { id: ekstrawersja, title: "Ekstrawersja", aggregation: sum, items: [q1, q6, q11, q16], range: { min: 4, max: 20 }, bands: [] }
+  - { id: ugodowosc, title: "Ugodowość", aggregation: sum, items: [q2, q7, q12, q17], range: { min: 4, max: 20 }, bands: [] }
+  - { id: sumiennosc, title: "Sumienność", aggregation: sum, items: [q3, q8, q13, q18], range: { min: 4, max: 20 }, bands: [] }
+  - { id: stabilnosc-emocjonalna, title: "Stabilność emocjonalna", aggregation: sum, items: [q4, q9, q14, q19], range: { min: 4, max: 20 }, bands: [] }
+  - { id: intelekt, title: "Intelekt", aggregation: sum, items: [q5, q10, q15, q20], range: { min: 4, max: 20 }, bands: [] }
 safetySignals: []
 ---
 
-## O teście
+## O kwestionariuszu
 
-IPIP-BFM-20 to krótki samoopis oparty na public-domain puli IPIP. W v1 zachowujemy oficjalną wersję źródłową angielską; polska adaptacja wymagałaby osobnego potwierdzenia praw i jakości adaptacji.
+IPIP-BFM-20 opisuje pięć cech: ekstrawersję, ugodowość, sumienność, stabilność emocjonalną i intelekt. Każdą cechę mierzą cztery stwierdzenia, więc wynik każdej mieści się między 4 a 20 punktami.
+
+## Jak czytać wynik
+
+Wynik to suma punktów, bez porównania z wynikami innych osób. PsycheKit nie stosuje tu norm, dlatego nie pokazuje etykiet w rodzaju „wysoki" czy „niski". Wyższa liczba punktów oznacza tylko, że więcej stwierdzeń opisujących daną cechę zostało uznanych za trafne.
 
 ## Ograniczenia
 
-Wyniki opisują wyłącznie odpowiedzi udzielone w tym przebiegu. Nie są normami, diagnozą ani poradą psychologiczną.
+Wynik opisuje wyłącznie odpowiedzi udzielone w tym przebiegu. Nie jest normą, diagnozą ani poradą psychologiczną. Narzędzie nie służy do indywidualnej oceny psychologicznej.

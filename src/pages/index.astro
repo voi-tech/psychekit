@@ -1,10 +1,28 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
-const instruments = (await getCollection("instrumenty")).sort((a, b) => a.data.title.localeCompare(b.data.title));
+
+const instruments = (await getCollection("instrumenty")).sort((a, b) => a.data.title.localeCompare(b.data.title, "pl"));
 ---
-<BaseLayout title="Samoopisowe kwestionariusze" description="Prywatny, lokalny silnik samoopisowych kwestionariuszy.">
-  <div class="hero"><p class="eyebrow">Local-first · bez kont · bez analityki</p><h1>Sprawdź wynik samoopisu na swoim urządzeniu.</h1><p>PsycheKit pokazuje jawny wynik i oficjalny przedział. Odpowiedzi nie są wysyłane na serwer ani zapisywane w historii bez Twojej zgody.</p></div>
-  <section aria-labelledby="instruments"><h2 id="instruments">Dostępne kwestionariusze</h2><div class="cards">{instruments.map((entry) => <article class="card"><h3>{entry.data.title}</h3><p>{entry.data.subtitle}</p><p class="meta">{entry.data.items.length} pozycji · około {entry.data.estimatedMinutes} min · {entry.data.language}</p><a href={`/test/${entry.data.id}`}>Rozpocznij <span class="sr-only">{entry.data.title}</span></a></article>)}</div></section>
-  <div class="notice"><strong>Ważne:</strong> PsycheKit nie diagnozuje i nie zastępuje konsultacji ze specjalistą.</div>
+<BaseLayout title="Kwestionariusze" description="Kwestionariusze samoopisowe liczone w Twojej przeglądarce.">
+  <div class="hero">
+    <h1>Wypełnij kwestionariusz i zobacz wynik na swoim urządzeniu</h1>
+    <p>Odpowiedzi nie są wysyłane na serwer. Wynik trafia do historii tylko wtedy, gdy sam o tym zdecydujesz.</p>
+  </div>
+
+  <section aria-labelledby="lista-kwestionariuszy">
+    <h2 id="lista-kwestionariuszy">Dostępne kwestionariusze</h2>
+    <div class="cards">
+      {instruments.map((entry) => (
+        <article class="card">
+          <h3>{entry.data.title}</h3>
+          <p>{entry.data.subtitle}</p>
+          <p class="meta">{entry.data.items.length} pytań · około {entry.data.estimatedMinutes} minut</p>
+          <p><a href={`/test/${entry.data.id}/`}>Wypełnij<span class="sr-only"> kwestionariusz {entry.data.title}</span></a></p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <p class="notice">PsycheKit nie stawia diagnozy i nie zastępuje rozmowy ze specjalistą.</p>
 </BaseLayout>

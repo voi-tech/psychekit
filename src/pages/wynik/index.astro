@@ -2,4 +2,6 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import ResultView from "@/components/ResultView";
 ---
-<BaseLayout title="Wynik" noindex={true}><ResultView client:load /></BaseLayout>
+<BaseLayout title="Wynik" description="Wynik ostatnio wypełnionego kwestionariusza." noindex={true}>
+  <ResultView client:load />
+</BaseLayout>

@@ -1,4 +1,26 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 ---
-<BaseLayout title="Prywatność"><div class="hero"><p class="eyebrow">Prywatność</p><h1>Odpowiedzi pozostają w przeglądarce.</h1><p>PsycheKit nie przesyła ani nie przechowuje odpowiedzi i wyników testów na serwerze.</p></div><section class="panel"><h2>Dane aplikacji</h2><p>Odpowiedzi i rozpoczęte sesje są przechowywane lokalnie w IndexedDB, aby umożliwić wznowienie. Sesje wygasają po 7 dniach. Ukończony wynik trafia do historii wyłącznie po wybraniu opcji zapisu.</p><h2>Dane techniczne hostingu</h2><p>Zwykłe żądania HTTP mogą ujawniać dostawcy infrastruktury między innymi adres IP, user-agent i podstawowe metadane żądania. PsycheKit nie wysyła tam odpowiedzi na kwestionariusze.</p><h2>AI</h2><p>Przycisk kopiowania tworzy tekst lokalnie. Po wklejeniu go do zewnętrznej usługi AI dane opuszczają PsycheKit i podlegają zasadom prywatności tej usługi.</p><h2>Współdzielone urządzenie</h2><p>Brak backendu nie eliminuje ryzyka dostępu do lokalnego urządzenia. Nie zapisuj wyniku w historii, jeśli urządzenie jest współdzielone.</p></section></BaseLayout>
+<BaseLayout title="Prywatność" description="Co PsycheKit zapisuje, gdzie i na jak długo.">
+  <div class="hero">
+    <h1>Prywatność</h1>
+    <p>Odpowiedzi i wyniki pozostają w Twojej przeglądarce. PsycheKit nie przesyła ich nigdzie i nie przechowuje na serwerze.</p>
+  </div>
+
+  <section class="panel">
+    <h2>Co zostaje na Twoim urządzeniu</h2>
+    <p>Rozpoczęty kwestionariusz zapisuje się w pamięci przeglądarki, żeby dało się go dokończyć później. Taki zapis znika po siedmiu dniach od ostatniej odpowiedzi. Ukończony wynik trafia do historii wyłącznie wtedy, gdy zaznaczysz to po wypełnieniu. Zapamiętywany jest też wybrany wygląd strony i forma, w jakiej zadawane są pytania.</p>
+
+    <h2>Co widzi dostawca serwera</h2>
+    <p>Samo otwarcie strony przekazuje dostawcy serwera zwykłe dane połączenia: adres sieciowy, informację o przeglądarce i adres otwieranej strony. Nie trafiają tam żadne odpowiedzi ani wyniki.</p>
+
+    <h2>Kopiowanie wyniku</h2>
+    <p>Przycisk kopiowania przygotowuje tekst w Twojej przeglądarce. Jeśli wkleisz go do zewnętrznej usługi, na przykład do asystenta opartego na sztucznej inteligencji, dane opuszczą PsycheKit i zaczną podlegać zasadom tej usługi.</p>
+
+    <h2>Wspólne urządzenie</h2>
+    <p>Brak serwera nie chroni przed dostępem osoby, która korzysta z tego samego urządzenia. Jeśli dzielisz je z kimś, nie zapisuj wyniku w historii.</p>
+
+    <h2>Usuwanie danych</h2>
+    <p>Każdy zapisany wynik możesz usunąć pojedynczo lub wszystkie naraz na stronie <a href="/historia/">Historia</a>. Wyczyszczenie danych strony w ustawieniach przeglądarki usuwa wszystko, co PsycheKit zapisał.</p>
+  </section>
+</BaseLayout>
