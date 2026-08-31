@@ -15,6 +15,7 @@ sources:
 optionSets:
   czestotliwosc:
     id: czestotliwosc
+    prompt: "Jak często w ciągu ostatnich dwóch tygodni?"
     options:
       - { id: wcale, score: 0, label: "Wcale" }
       - { id: kilka-dni, score: 1, label: "Kilka dni" }

@@ -4,7 +4,13 @@ import { z } from "astro/zod";
 
 const httpUrl = z.string().refine((value) => /^https?:\/\//.test(value), "Expected an HTTP source URL");
 
-const optionSchema = z.object({ id: z.string(), score: z.number(), label: z.string() });
+const optionSchema = z.object({
+  id: z.string(), score: z.number(),
+  /** Full official wording; always the accessible name and the wording in the report. */
+  label: z.string(),
+  /** Shown on the scale when the full wording repeats across options. */
+  shortLabel: z.string().optional(),
+});
 /** Either one neutral phrasing, or a masculine/feminine pair. */
 const localizedTextSchema = z.union([z.string(), z.object({ m: z.string(), f: z.string() })]);
 const itemSchema = z.object({ id: z.string(), text: localizedTextSchema, optionSet: z.string(), reversed: z.boolean().optional() });
@@ -24,7 +30,12 @@ const instrumentSchema = z.object({
   /** Shown whenever PsycheKit altered the licensed wording. */
   adaptationNotice: z.string().optional(),
   disclaimer: z.string(),
-  sources: z.array(httpUrl), optionSets: z.record(z.string(), z.object({ id: z.string(), options: z.array(optionSchema) })),
+  sources: z.array(httpUrl), optionSets: z.record(z.string(), z.object({
+    id: z.string(),
+    /** The stem the items answer, e.g. "Jak często w ciągu ostatnich dwóch tygodni?". */
+    prompt: z.string().optional(),
+    options: z.array(optionSchema),
+  })),
   items: z.array(itemSchema), scales: z.array(scaleSchema),
   safetySignals: z.array(z.object({ id: z.string(), item: z.string(), when: z.object({ scoreGte: z.number() }), message: z.string().optional() })).default([]),
 });

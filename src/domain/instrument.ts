@@ -6,8 +6,8 @@ export type Gender = "m" | "f";
 /** Item wording: a single neutral phrasing, or one phrasing per grammatical form. */
 export type LocalizedText = string | Record<Gender, string>;
 
-export interface Option { id: string; score: number; label: string; }
-export interface OptionSet { id: string; options: Option[]; }
+export interface Option { id: string; score: number; label: string; shortLabel?: string; }
+export interface OptionSet { id: string; prompt?: string; options: Option[]; }
 export interface InstrumentItem { id: string; text: LocalizedText; optionSet: string; reversed?: boolean; }
 export interface Range { min: number; max: number; }
 export interface Band { min: number; max: number; label: string; }

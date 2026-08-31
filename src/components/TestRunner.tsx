@@ -1,5 +1,5 @@
-import { useEffect, useState, type CSSProperties } from "react";
-import type { Gender, Instrument } from "@/domain/instrument";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
+import type { Gender, Instrument, OptionSet } from "@/domain/instrument";
 import { resolveText } from "@/domain/instrument";
 import { CURRENT_RESULT_KEY, type ResultSnapshot } from "@/domain/result";
 import { scoreScale } from "@/engine/scoring";
@@ -11,6 +11,8 @@ type Stage = "forma" | "pytania" | "zapis";
 
 const GENDER_LABELS: Record<Gender, string> = { m: "męska", f: "żeńska" };
 const RYTM_ZWARTY = { "--rytm": "var(--s2)" } as CSSProperties;
+/** Krótka pauza po wyborze, żeby zaznaczenie zdążyło się pokazać przed przejściem dalej. */
+const PAUZA_PRZED_PRZEJSCIEM = 260;
 
 export default function TestRunner({ instrument }: { instrument: Instrument }) {
   const sessionId = `aktywna:${instrument.id}`;
@@ -21,6 +23,7 @@ export default function TestRunner({ instrument }: { instrument: Instrument }) {
   const [snapshot, setSnapshot] = useState<ResultSnapshot | null>(null);
   const [error, setError] = useState("");
   const [ready, setReady] = useState(false);
+  const przejscie = useRef<number | null>(null);
 
   useEffect(() => {
     let active = true;
@@ -40,6 +43,14 @@ export default function TestRunner({ instrument }: { instrument: Instrument }) {
     })();
     return () => { active = false; };
   }, [instrument.items.length, sessionId]);
+
+  useEffect(() => () => { if (przejscie.current !== null) window.clearTimeout(przejscie.current); }, []);
+
+  const anulujPrzejscie = () => {
+    if (przejscie.current === null) return;
+    window.clearTimeout(przejscie.current);
+    przejscie.current = null;
+  };
 
   if (!ready) {
     return (
@@ -69,6 +80,7 @@ export default function TestRunner({ instrument }: { instrument: Instrument }) {
   const item = instrument.items[index];
   const optionSet = instrument.optionSets[item.optionSet];
   const total = instrument.items.length;
+  const isLast = index === total - 1;
 
   const persistSession = (nextResponses: Record<string, string>, nextIndex: number) =>
     saveSession({ id: sessionId, instrumentId: instrument.id, gender, responses: nextResponses, currentIndex: nextIndex });
@@ -78,6 +90,14 @@ export default function TestRunner({ instrument }: { instrument: Instrument }) {
     setResponses(next);
     setError("");
     void persistSession(next, index);
+    anulujPrzejscie();
+    // Ostatnie pytanie zostaje na ekranie: zakończenie kwestionariusza ma być świadome.
+    if (isLast) return;
+    przejscie.current = window.setTimeout(() => {
+      przejscie.current = null;
+      setIndex((current) => (current === index ? current + 1 : current));
+      void persistSession(next, index + 1);
+    }, PAUZA_PRZED_PRZEJSCIEM);
   };
 
   const finish = async () => {
@@ -114,15 +134,15 @@ export default function TestRunner({ instrument }: { instrument: Instrument }) {
     }
   };
 
-  const isLast = index === total - 1;
   const goNext = () => {
+    anulujPrzejscie();
     if (!responses[item.id]) { setError("Wybierz jedną odpowiedź, aby przejść dalej."); return; }
     setError("");
     if (isLast) { void finish(); return; }
     setIndex(index + 1);
     void persistSession(responses, index + 1);
   };
-  const goBack = () => { setError(""); setIndex(Math.max(0, index - 1)); };
+  const goBack = () => { anulujPrzejscie(); setError(""); setIndex(Math.max(0, index - 1)); };
 
   return (
     <section className="panel rytm miara-formularz" aria-labelledby="tytul-kwestionariusza">
@@ -149,20 +169,12 @@ export default function TestRunner({ instrument }: { instrument: Instrument }) {
         ))}
       </div>
 
-      <fieldset className="opcje">
-        <legend>{resolveText(item.text, gender)}</legend>
-        {optionSet.options.map((option) => (
-          <label className="opcja" key={option.id}>
-            <input
-              type="radio"
-              name={item.id}
-              value={option.id}
-              checked={responses[item.id] === option.id}
-              onChange={() => chooseOption(option.id)}
-            />
-            {option.label}
-          </label>
-        ))}
+      <fieldset className="pytanie">
+        <legend className="pytanie-legenda">
+          {optionSet.prompt && <span className="pytanie-stem">{optionSet.prompt}</span>}
+          <span className="pytanie-tresc">{resolveText(item.text, gender)}</span>
+        </legend>
+        <Skala optionSet={optionSet} itemId={item.id} value={responses[item.id]} onChoose={chooseOption} />
       </fieldset>
 
       {error && <p role="alert" className="notice danger">{error}</p>}
@@ -175,11 +187,38 @@ export default function TestRunner({ instrument }: { instrument: Instrument }) {
       <div className="meta stopka-panelu">
         <span>
           Forma {GENDER_LABELS[gender]}
-          <button className="btn btn-tekst" type="button" onClick={() => setStage("forma")}>Zmień formę</button>
+          <button className="btn btn-tekst" type="button" onClick={() => { anulujPrzejscie(); setStage("forma"); }}>Zmień formę</button>
         </span>
-        <span>Rozpoczęty kwestionariusz zapisuje się na tym urządzeniu i wygasa po siedmiu dniach.</span>
+        <span>{isLast ? "To ostatnie pytanie." : "Wybór odpowiedzi przenosi do następnego pytania."} Rozpoczęty kwestionariusz zapisuje się na tym urządzeniu i wygasa po siedmiu dniach.</span>
       </div>
     </section>
+  );
+}
+
+/** Stopnie skali stoją obok siebie, bo odpowiedzi tworzą uporządkowany ciąg, a nie zbiór możliwości. */
+function Skala({ optionSet, itemId, value, onChoose }: {
+  optionSet: OptionSet;
+  itemId: string;
+  value: string | undefined;
+  onChoose: (optionId: string) => void;
+}) {
+  return (
+    <div className="skala" style={{ "--stopnie": optionSet.options.length } as CSSProperties}>
+      {optionSet.options.map((option) => (
+        <label className="stopien" key={option.id}>
+          <input
+            type="radio"
+            name={itemId}
+            value={option.id}
+            checked={value === option.id}
+            onChange={() => onChoose(option.id)}
+            aria-label={option.label}
+          />
+          <span className="stopien-znacznik" aria-hidden="true" />
+          <span className="stopien-etykieta" aria-hidden="true">{option.shortLabel ?? option.label}</span>
+        </label>
+      ))}
+    </div>
   );
 }
 

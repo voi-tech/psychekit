@@ -7,12 +7,13 @@ async function start(page: Page, gender: "męska" | "żeńska" = "męska") {
   await page.getByRole("button", { name: "Rozpocznij" }).click();
 }
 
-/** Answers every item with the option at `optionIndex` and submits the questionnaire. */
+/** Answers every item with the option at `optionIndex`; choosing an answer advances on its own. */
 async function answerAll(page: Page, count: number, optionIndex = 0) {
   for (let index = 0; index < count; index += 1) {
+    await expect(page.getByText(`Pytanie ${index + 1} z ${count}`)).toBeVisible();
     await page.getByRole("radio").nth(optionIndex).check();
-    await page.getByRole("button", { name: index === count - 1 ? "Pokaż wynik" : "Dalej" }).click();
   }
+  await page.getByRole("button", { name: "Pokaż wynik" }).click();
 }
 
 test("public pages have no accessibility violations in both themes", async ({ page }) => {
@@ -93,21 +94,58 @@ test("no question shows a doubled grammatical form", async ({ page }) => {
     await page.goto(`/test/${id}/`);
     await start(page);
     for (let index = 0; index < count; index += 1) {
-      await expect(page.locator("legend")).not.toHaveText(/\(a\)|\(i\)|\/a\b|\/i\b/);
+      await expect(page.getByText(`Pytanie ${index + 1} z ${count}`)).toBeVisible();
+      await expect(page.locator(".pytanie-tresc")).not.toHaveText(/\(a\)|\(i\)|\/a\b|\/i\b/);
       if (index === count - 1) break;
       await page.getByRole("radio").first().check();
-      await page.getByRole("button", { name: "Dalej" }).click();
     }
   }
+});
+
+test("choosing an answer moves on, and the scale carries the stem it answers", async ({ page }) => {
+  await page.goto("/test/gad-7/");
+  await start(page);
+  await expect(page.getByText("Jak często w ciągu ostatnich dwóch tygodni?")).toBeVisible();
+  await expect(page.getByText("Pytanie 1 z 7")).toBeVisible();
+  await page.getByRole("radio").first().check();
+  await expect(page.getByText("Pytanie 2 z 7")).toBeVisible();
+  await page.getByRole("button", { name: "Wstecz" }).click();
+  await expect(page.getByText("Pytanie 1 z 7")).toBeVisible();
+  await expect(page.getByRole("radio").first()).toBeChecked();
+});
+
+test("the last question waits for an explicit finish", async ({ page }) => {
+  await page.goto("/test/gad-7/");
+  await start(page);
+  for (let index = 0; index < 6; index += 1) {
+    await expect(page.getByText(`Pytanie ${index + 1} z 7`)).toBeVisible();
+    await page.getByRole("radio").first().check();
+  }
+  await expect(page.getByText("Pytanie 7 z 7")).toBeVisible();
+  await page.getByRole("radio").first().check();
+  await page.waitForTimeout(600);
+  await expect(page.getByText("Pytanie 7 z 7")).toBeVisible();
+  await page.getByRole("button", { name: "Pokaż wynik" }).click();
+  await expect(page.getByRole("heading", { name: "Wynik jest gotowy" })).toBeVisible();
+});
+
+test("the response scale drops wording that repeats across every option", async ({ page }) => {
+  await page.goto("/test/ipip-bfm-20/");
+  await start(page);
+  await expect(page.getByText("Na ile trafnie to zdanie opisuje Ciebie?")).toBeVisible();
+  await expect(page.locator(".stopien-etykieta").first()).toHaveText("Całkowicie nietrafnie");
+  await expect(page.getByText("mnie opisuje")).toHaveCount(0);
+  await expect(page.getByRole("radio", { name: "Całkowicie nietrafnie mnie opisuje" })).toHaveCount(1);
 });
 
 test("PHQ-9 completes, activates the safety message, and declines history", async ({ page }) => {
   await page.goto("/test/phq-9/");
   await start(page);
   for (let index = 0; index < 8; index += 1) {
+    await expect(page.getByText(`Pytanie ${index + 1} z 9`)).toBeVisible();
     await page.getByRole("radio").first().check();
-    await page.getByRole("button", { name: "Dalej" }).click();
   }
+  await expect(page.getByText("Pytanie 9 z 9")).toBeVisible();
   await page.getByRole("radio").nth(1).check();
   await page.getByRole("button", { name: "Pokaż wynik" }).click();
   await expect(page.getByRole("heading", { name: "Wynik jest gotowy" })).toBeVisible();
@@ -154,11 +192,14 @@ test("IPIP-BFM-20 reports five scales without interpretive bands and exports agg
 test("a started questionnaire is restored after a refresh", async ({ page }) => {
   await page.goto("/test/gad-7/");
   await start(page, "żeńska");
-  await page.getByRole("radio").nth(2).check();
   await expect(page.getByText("Pytanie 1 z 7")).toBeVisible();
+  await page.getByRole("radio").nth(2).check();
+  await expect(page.getByText("Pytanie 2 z 7")).toBeVisible();
   await page.waitForTimeout(200);
   await page.reload();
   await start(page, "żeńska");
+  await expect(page.getByText("Pytanie 2 z 7")).toBeVisible();
+  await page.getByRole("button", { name: "Wstecz" }).click();
   await expect(page.getByRole("radio").nth(2)).toBeChecked();
 });
 

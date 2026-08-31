@@ -152,7 +152,7 @@ li a, dd a { overflow-wrap: anywhere; }
 .rytm > :is(h2, h3) + * { margin-block-start: var(--s3); }
 .rytm > * + .notice, .rytm > .notice + * { margin-block-start: var(--s5); }
 
-.miara { max-width: var(--miara); }
+.miara { max-width: var(--miara); margin-inline: auto; }
 /* Ekrany wypełniania są jedynym zadaniem strony, więc stoją na jej osi. */
 .miara-formularz { max-width: var(--miara-formularz); margin-inline: auto; }
 .mikro {
@@ -299,8 +299,54 @@ main { display: block; padding-block: var(--s7) var(--s9); }
    ------------------------------------------------------------------ */
 .opcje { display: grid; gap: var(--s2); }
 .opcje legend {
-  font-size: var(--t-pytanie); font-weight: 500; line-height: 1.4;
-  max-width: var(--miara); text-wrap: pretty; margin-block-end: var(--s5);
+  font-size: var(--t-duzy); font-weight: 500; line-height: 1.4;
+  text-wrap: pretty; margin-block-end: var(--s4);
+}
+
+/* ------------------------------------------------------------------
+   Skala odpowiedzi. Pozycje kwestionariusza są porządkowe, więc stopnie
+   stoją obok siebie, a powtarzająca się część brzmienia wychodzi
+   do pytania wiodącego nad nimi.
+   ------------------------------------------------------------------ */
+.pytanie { display: grid; gap: var(--s5); }
+.pytanie-legenda { display: block; }
+/* Pytanie wiodące to całe zdanie, więc zostaje w zwykłym zapisie — wersaliki męczą przy dłuższym tekście. */
+.pytanie-stem { display: block; margin-block-end: var(--s2); font-size: var(--t-maly); color: var(--tekst-drugorzedny); }
+.pytanie-tresc {
+  display: block;
+  font-size: var(--t-pytanie); font-weight: 500; line-height: 1.35;
+  text-wrap: pretty;
+}
+
+.skala { display: grid; grid-template-columns: repeat(var(--stopnie, 4), 1fr); gap: var(--s2); }
+.stopien {
+  position: relative;
+  display: flex; flex-direction: column; align-items: center; gap: var(--s2);
+  padding: var(--s4) var(--s2);
+  border: var(--grubosc-znacznika) solid var(--obramowanie-mocne);
+  border-radius: var(--promien-m);
+  background: var(--tlo-wypukle);
+  text-align: center;
+  cursor: pointer;
+}
+.stopien input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+.stopien-znacznik {
+  flex: none; width: 1.15rem; height: 1.15rem;
+  display: grid; place-content: center;
+  border: 1.5px solid var(--obramowanie-mocne); border-radius: 50%;
+}
+.stopien-znacznik::before { content: ""; width: .55rem; height: .55rem; border-radius: 50%; background: var(--akcent); transform: scale(0); }
+.stopien-etykieta { font-size: var(--t-maly); line-height: 1.3; }
+.stopien:hover { border-color: var(--akcent); }
+.stopien:has(input:focus-visible) { outline: 2px solid var(--akcent); outline-offset: 2px; }
+.stopien:has(input:checked) { border-color: var(--akcent); background: var(--tlo-zaznaczone); }
+.stopien:has(input:checked) .stopien-znacznik { border-color: var(--akcent); }
+.stopien:has(input:checked) .stopien-znacznik::before { transform: scale(1); }
+
+@media (max-width: 34rem) {
+  .skala { grid-template-columns: 1fr; }
+  .stopien { flex-direction: row; justify-content: flex-start; padding: var(--s3) var(--s4); text-align: left; }
+  .stopien-etykieta { font-size: var(--t-maly); }
 }
 
 .tytul-cichy { font-size: var(--t-duzy); font-weight: 500; letter-spacing: -.01em; color: var(--tekst-drugorzedny); }
