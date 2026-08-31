@@ -2,7 +2,8 @@ export interface ScaleOutcome { title: string; score: number; min: number; max: 
 
 export interface ResultSnapshot {
   instrumentId: string;
-  title: string;
+  name: string;
+  code: string;
   definitionVersion: string;
   appVersion: string;
   completedAt: number;

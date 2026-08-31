@@ -48,7 +48,8 @@ export default function ResultView() {
 
   return (
     <div className="hero">
-      <h1>{snapshot.title}</h1>
+      <h1>{snapshot.name}</h1>
+      <p className="kod">{snapshot.code}</p>
       <p className="meta">Wypełniono {new Date(snapshot.completedAt).toLocaleString("pl-PL")}</p>
 
       <div className="result-grid">
@@ -87,9 +88,11 @@ export default function ResultView() {
       {copied && <p role="status" className="meta">Wynik został skopiowany.</p>}
       <p className="meta">Jeśli wkleisz skopiowany tekst do zewnętrznej usługi, na przykład do asystenta opartego na sztucznej inteligencji, dane opuszczą PsycheKit i zaczną podlegać zasadom tej usługi.</p>
 
-      <h2>Źródła</h2>
-      <ul>{snapshot.sources.map((source) => <li key={source}><a href={source}>{source}</a></li>)}</ul>
-      {snapshot.attribution && <p className="meta">{snapshot.attribution}</p>}
+      <section className="panel">
+        <h2>Źródła</h2>
+        <ul>{snapshot.sources.map((source) => <li key={source}><a href={source}>{source}</a></li>)}</ul>
+        {snapshot.attribution && <p className="meta">{snapshot.attribution}</p>}
+      </section>
     </div>
   );
 }

@@ -37,7 +37,8 @@ export default function HistoryView() {
       <p className="meta">Zapisane wyniki: {results.length}. Wszystkie są przechowywane wyłącznie na tym urządzeniu.</p>
       {results.map((record) => (
         <article className="card" key={record.id}>
-          <h2>{record.snapshot.title}</h2>
+          <h2>{record.snapshot.name}</h2>
+          <p className="kod">{record.snapshot.code}</p>
           <p className="meta">Wypełniono {new Date(record.completedAt).toLocaleString("pl-PL")}</p>
           <ul>
             {record.snapshot.results.map((result) => (
@@ -47,7 +48,7 @@ export default function HistoryView() {
             ))}
           </ul>
           <button className="secondary" type="button" onClick={() => void removeOne(record.id)}>
-            Usuń ten wynik<span className="sr-only"> — {record.snapshot.title}, {new Date(record.completedAt).toLocaleString("pl-PL")}</span>
+            Usuń ten wynik<span className="sr-only"> — {record.snapshot.name}, {new Date(record.completedAt).toLocaleString("pl-PL")}</span>
           </button>
         </article>
       ))}

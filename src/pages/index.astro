@@ -2,7 +2,7 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 
-const instruments = (await getCollection("instrumenty")).sort((a, b) => a.data.title.localeCompare(b.data.title, "pl"));
+const instruments = (await getCollection("instrumenty")).sort((a, b) => a.data.name.localeCompare(b.data.name, "pl"));
 ---
 <BaseLayout title="Kwestionariusze" description="Kwestionariusze samoopisowe liczone w Twojej przeglądarce.">
   <div class="hero">
@@ -15,10 +15,11 @@ const instruments = (await getCollection("instrumenty")).sort((a, b) => a.data.t
     <div class="cards">
       {instruments.map((entry) => (
         <article class="card">
-          <h3>{entry.data.title}</h3>
+          <h3>{entry.data.name}</h3>
+          <p class="kod">{entry.data.code}</p>
           <p>{entry.data.subtitle}</p>
           <p class="meta">{entry.data.items.length} pytań · około {entry.data.estimatedMinutes} minut</p>
-          <p><a href={`/test/${entry.data.id}/`}>Wypełnij<span class="sr-only"> kwestionariusz {entry.data.title}</span></a></p>
+          <p><a href={`/test/${entry.data.id}/`}>Wypełnij<span class="sr-only"> kwestionariusz {entry.data.name}</span></a></p>
         </article>
       ))}
     </div>

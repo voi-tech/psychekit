@@ -3,7 +3,7 @@ import { db, saveSession, loadSession, deleteSession, saveResult, listResults, d
 import type { ResultSnapshot } from "@/domain/result";
 
 const snapshot: ResultSnapshot = {
-  instrumentId: "gad-7", title: "GAD-7", definitionVersion: "2.0.0", appVersion: "26.8.0", completedAt: 1,
+  instrumentId: "gad-7", name: "Skala lęku uogólnionego", code: "GAD-7", definitionVersion: "2.0.0", appVersion: "26.8.0", completedAt: 1,
   results: [{ title: "Wynik ogólny", score: 4, min: 0, max: 21, band: "Minimalne" }],
   disclaimer: "To nie jest diagnoza.", sources: [], safetyMessages: [],
 };

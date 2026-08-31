@@ -3,7 +3,7 @@ import type { ResultSnapshot } from "@/domain/result";
 export function buildMarkdownReport(snapshot: ResultSnapshot): string {
   const data = new Date(snapshot.completedAt).toLocaleDateString("pl-PL", { year: "numeric", month: "2-digit", day: "2-digit" });
   const wiersze = [
-    `# ${snapshot.title}`, "",
+    `# ${snapshot.name} (${snapshot.code})`, "",
     `Data wypełnienia: ${data}`,
     `Wersja kwestionariusza: ${snapshot.definitionVersion}`,
     `Wersja PsycheKit: ${snapshot.appVersion}`, "",

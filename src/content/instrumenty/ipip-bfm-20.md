@@ -1,6 +1,7 @@
 ---
 id: ipip-bfm-20
-title: IPIP-BFM-20
+name: Krótki kwestionariusz do pomiaru Wielkiej Piątki
+code: IPIP-BFM-20
 subtitle: Krótki opis pięciu cech osobowości
 language: pl
 definitionVersion: 2.0.0

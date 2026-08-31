@@ -42,7 +42,8 @@ export default function TestRunner({ instrument }: { instrument: Instrument }) {
 
   if (!ready) return (
     <div className="panel" aria-live="polite">
-      <h1>{instrument.title}</h1>
+      <h1>{instrument.name}</h1>
+      <p className="kod">{instrument.code}</p>
       <p>Wczytywanie kwestionariusza…</p>
     </div>
   );
@@ -89,7 +90,8 @@ export default function TestRunner({ instrument }: { instrument: Instrument }) {
         .map((signal) => signal.message ?? "Ta odpowiedź wymaga szczególnej uwagi.");
       const next: ResultSnapshot = {
         instrumentId: instrument.id,
-        title: instrument.title,
+        name: instrument.name,
+        code: instrument.code,
         definitionVersion: instrument.definitionVersion,
         appVersion: APP_VERSION,
         completedAt: Date.now(),
@@ -121,7 +123,8 @@ export default function TestRunner({ instrument }: { instrument: Instrument }) {
 
   return (
     <section aria-labelledby="tytul-kwestionariusza" className="panel">
-      <h1 id="tytul-kwestionariusza">{instrument.title}</h1>
+      <h1 id="tytul-kwestionariusza">{instrument.name}</h1>
+      <p className="kod">{instrument.code}</p>
       <p className="meta">Pytanie {index + 1} z {instrument.items.length} · forma {GENDER_LABELS[gender]}{" "}
         <button className="secondary" type="button" onClick={() => setStage("forma")}>Zmień formę</button>
       </p>
@@ -168,7 +171,8 @@ function GenderChoice({ instrument, gender, onGenderChange, onStart }: {
 }) {
   return (
     <section className="panel" aria-labelledby="tytul-formy">
-      <h1 id="tytul-formy">{instrument.title}</h1>
+      <h1 id="tytul-formy">{instrument.name}</h1>
+      <p className="kod">{instrument.code}</p>
       <p>{instrument.subtitle}</p>
       <p className="meta">{instrument.items.length} pytań · około {instrument.estimatedMinutes} minut</p>
       <fieldset className="options">

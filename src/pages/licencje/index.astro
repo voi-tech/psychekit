@@ -41,7 +41,7 @@ const data = (value: string) => new Date(value).toLocaleDateString("pl-PL");
       const uzywajace = instruments.filter((instrument) => instrument.data.license === entry.data.id);
       return (
         <article class="card">
-          <h2>{uzywajace.length > 0 ? uzywajace.map((instrument) => instrument.data.title).join(", ") : "Nieużywane w tej wersji"}</h2>
+          <h2>{uzywajace.length > 0 ? uzywajace.map((instrument) => instrument.data.name).join(", ") : "Nieużywane w tej wersji"}</h2>
           <dl>
             <dt>Warunki</dt><dd>{KLASA[entry.data.class]}</dd>
             <dt>Stan sprawdzenia</dt><dd>{STATUS[entry.data.status]}, sprawdzono {data(entry.data.verifiedAt)}</dd>

@@ -1,6 +1,7 @@
 ---
 id: gad-7
-title: GAD-7
+name: Skala lęku uogólnionego
+code: GAD-7
 subtitle: Nasilenie objawów lękowych w ostatnich dwóch tygodniach
 language: pl
 definitionVersion: 2.0.0

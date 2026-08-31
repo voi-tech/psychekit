@@ -34,16 +34,49 @@ test("the question view has no accessibility violations", async ({ page }) => {
   expect(results.violations).toEqual([]);
 });
 
-test("theme choice applies immediately and survives a reload", async ({ page }) => {
+test("the theme icon cycles system, light and dark and survives a reload", async ({ page }) => {
   await page.goto("/");
-  await expect(page.locator("html")).not.toHaveAttribute("data-motyw", /.+/);
-  await page.getByLabel("Wygląd").selectOption("dark");
-  await expect(page.locator("html")).toHaveAttribute("data-motyw", "ciemny");
+  const toggle = page.getByRole("button", { name: /^Wygląd:/ });
+  const html = page.locator("html");
+
+  await expect(html).not.toHaveAttribute("data-motyw", /.+/);
+  await expect(page.locator(".ikona-system")).toBeVisible();
+  await expect(page.locator(".ikona-jasny")).toBeHidden();
+
+  await toggle.click();
+  await expect(html).toHaveAttribute("data-motyw", "jasny");
+  await expect(page.locator(".ikona-jasny")).toBeVisible();
+
+  await toggle.click();
+  await expect(html).toHaveAttribute("data-motyw", "ciemny");
+  await expect(page.locator(".ikona-ciemny")).toBeVisible();
+
   await page.reload();
-  await expect(page.locator("html")).toHaveAttribute("data-motyw", "ciemny");
-  await expect(page.getByLabel("Wygląd")).toHaveValue("dark");
-  await page.getByLabel("Wygląd").selectOption("auto");
-  await expect(page.locator("html")).not.toHaveAttribute("data-motyw", /.+/);
+  await expect(html).toHaveAttribute("data-motyw", "ciemny");
+
+  await toggle.click();
+  await expect(html).not.toHaveAttribute("data-motyw", /.+/);
+});
+
+test("the interface uses the locally hosted Geist fonts", async ({ page }) => {
+  await page.goto("/");
+  await expect.poll(() => page.evaluate(() => getComputedStyle(document.body).fontFamily)).toContain("Geist");
+  const families = await page.evaluate(async () => {
+    await document.fonts.ready;
+    return [...document.fonts].map((face) => face.family);
+  });
+  expect(families).toContain("Geist");
+  expect(families).toContain("Geist Mono");
+});
+
+test("cards show the questionnaire name with the code underneath, and no footer note remains", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.getByRole("heading", { name: "Kwestionariusz zdrowia pacjenta" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Skala lęku uogólnionego" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Krótki kwestionariusz do pomiaru Wielkiej Piątki" })).toBeVisible();
+  await expect(page.locator(".kod", { hasText: "PHQ-9" })).toBeVisible();
+  await expect(page.locator("footer")).toHaveCount(0);
+  await expect(page.getByText("Odpowiedzi są przetwarzane w Twojej przeglądarce")).toHaveCount(0);
 });
 
 test("question wording follows the chosen grammatical form", async ({ page }) => {
@@ -112,7 +145,7 @@ test("IPIP-BFM-20 reports five scales without interpretive bands and exports agg
   const stream = await download.createReadStream();
   let markdown = "";
   if (stream) for await (const chunk of stream) markdown += chunk.toString();
-  expect(markdown).toContain("# IPIP-BFM-20");
+  expect(markdown).toContain("# Krótki kwestionariusz do pomiaru Wielkiej Piątki (IPIP-BFM-20)");
   expect(markdown).toContain("## Wyniki");
   expect(markdown).toContain("www.ipip.edu.pl");
   expect(markdown).not.toContain("q1");
@@ -138,7 +171,7 @@ test("an opted-in result appears in history and can be removed", async ({ page }
   await page.getByRole("button", { name: "Przejdź do wyniku" }).click();
   await expect(page).toHaveURL(/\/wynik\/$/);
   await page.goto("/historia/");
-  await expect(page.getByRole("heading", { name: "GAD-7" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Skala lęku uogólnionego" })).toBeVisible();
   await page.getByRole("button", { name: "Usuń wszystkie wyniki" }).click();
   await expect(page.getByText(/Nie ma tu jeszcze żadnego wyniku/)).toBeVisible();
 });
@@ -156,7 +189,7 @@ test("the application remains usable offline after the first load", async ({ pag
   await page.reload();
   await context.setOffline(true);
   await page.reload();
-  await expect(page.getByRole("heading", { name: "GAD-7" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Skala lęku uogólnionego" })).toBeVisible();
   await context.setOffline(false);
 });
 

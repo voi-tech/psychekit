@@ -1,6 +1,7 @@
 ---
 id: phq-9
-title: PHQ-9
+name: Kwestionariusz zdrowia pacjenta
+code: PHQ-9
 subtitle: Nasilenie objawów depresyjnych w ostatnich dwóch tygodniach
 language: pl
 definitionVersion: 2.0.0

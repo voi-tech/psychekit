@@ -4,7 +4,8 @@ import type { ResultSnapshot } from "@/domain/result";
 
 const snapshot: ResultSnapshot = {
   instrumentId: "test",
-  title: "Test instrument",
+  name: "Kwestionariusz testowy",
+  code: "TEST-1",
   definitionVersion: "1.0.0",
   appVersion: "26.8.0",
   completedAt: Date.UTC(2026, 7, 30, 12, 0, 0),
@@ -22,7 +23,7 @@ const snapshot: ResultSnapshot = {
 describe("buildMarkdownReport", () => {
   it("writes the report in Polish without item-level responses", () => {
     const markdown = buildMarkdownReport(snapshot);
-    expect(markdown).toContain("# Test instrument");
+    expect(markdown).toContain("# Kwestionariusz testowy (TEST-1)");
     expect(markdown).toContain("Wersja PsycheKit: 26.8.0");
     expect(markdown).toContain("- Wynik ogólny: 8 na 10 punktów (zakres od 0 do 10)");
     expect(markdown).toContain("  - Przedział: Umiarkowane");

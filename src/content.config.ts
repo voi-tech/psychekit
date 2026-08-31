@@ -17,7 +17,7 @@ const scaleSchema = z.object({
 });
 
 const instrumentSchema = z.object({
-  id: z.string(), title: z.string(), subtitle: z.string(), language: z.string(), definitionVersion: z.string(),
+  id: z.string(), name: z.string(), code: z.string(), subtitle: z.string(), language: z.string(), definitionVersion: z.string(),
   estimatedMinutes: z.number().int().positive(), license: z.string(),
   /** Credit line the license requires to be shown next to the instrument. */
   attribution: z.string().optional(),

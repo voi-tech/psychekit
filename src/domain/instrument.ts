@@ -16,7 +16,10 @@ export interface SafetySignal { id: string; item: string; when: { scoreGte: numb
 
 export interface Instrument {
   id: string;
-  title: string;
+  /** Human-readable name shown to the user. */
+  name: string;
+  /** Technical designation of the instrument, e.g. PHQ-9. */
+  code: string;
   subtitle: string;
   language: string;
   definitionVersion: string;
