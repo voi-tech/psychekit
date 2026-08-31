@@ -24,38 +24,44 @@ const UPRAWNIENIA: Array<[key: string, label: string]> = [
   ["modification", "Zmiana treści"],
   ["translation", "Tłumaczenie"],
   ["commercialUse", "Zastosowanie komercyjne"],
-  ["electronicAdministration", "Wypełnianie na stronie internetowej"],
+  ["electronicAdministration", "Wypełnianie na stronie"],
 ];
-const JEZYK: Record<string, string> = { pl: "polska", en: "angielska" };
 const tak = (value: boolean) => (value ? "Tak" : "Nie");
 const data = (value: string) => new Date(value).toLocaleDateString("pl-PL");
 ---
 <BaseLayout title="Licencje" description="Prawa do treści każdego kwestionariusza wraz ze źródłem.">
-  <div class="hero">
-    <h1>Prawa do treści kwestionariuszy</h1>
-    <p>Każdy kwestionariusz ma osobny opis praw. Kwestionariusz, którego prawa nie zostały potwierdzone, nie jest udostępniany.</p>
-  </div>
+  <div class="rytm">
+    <header class="rytm miara">
+      <p class="mikro">Licencje</p>
+      <h1>Prawa do treści kwestionariuszy</h1>
+      <p>Każdy kwestionariusz ma osobny opis praw. Kwestionariusz, którego prawa nie zostały potwierdzone, nie jest udostępniany.</p>
+    </header>
 
-  <div class="cards">
-    {licenses.map((entry) => {
-      const uzywajace = instruments.filter((instrument) => instrument.data.license === entry.data.id);
-      return (
-        <article class="card">
-          <h2>{uzywajace.length > 0 ? uzywajace.map((instrument) => instrument.data.name).join(", ") : "Nieużywane w tej wersji"}</h2>
-          <dl>
-            <dt>Warunki</dt><dd>{KLASA[entry.data.class]}</dd>
-            <dt>Stan sprawdzenia</dt><dd>{STATUS[entry.data.status]}, sprawdzono {data(entry.data.verifiedAt)}</dd>
-            <dt>Prawa do treści</dt><dd>{entry.data.holder}</dd>
-            <dt>Wersja językowa</dt><dd>{entry.data.translation.type === "none" ? TLUMACZENIE.none : `${TLUMACZENIE[entry.data.translation.type]}, ${JEZYK[entry.data.translation.language] ?? entry.data.translation.language}`}</dd>
-            {UPRAWNIENIA.map(([key, label]) => (
-              <><dt>{label}</dt><dd>{tak(entry.data.permissions[key as keyof typeof entry.data.permissions])}</dd></>
-            ))}
-          </dl>
-          {entry.data.attribution && <p class="meta">{entry.data.attribution}</p>}
-          {entry.data.notes && <p class="meta">{entry.data.notes}</p>}
-          <p><a href={entry.data.source}>Otwórz źródło</a></p>
-        </article>
-      );
-    })}
+    <div class="siatka-kart siatka-kart-szerokie">
+      {licenses.map((entry) => {
+        const uzywajace = instruments.filter((instrument) => instrument.data.license === entry.data.id);
+        const jezyk = entry.data.translation.language === "pl" ? "polska" : entry.data.translation.language;
+        return (
+          <article class="karta rytm" style="--rytm: var(--s4)">
+            <div class="rytm" style="--rytm: var(--s2)">
+              <p class="mikro">{entry.data.id}</p>
+              <h2 class="tytul-karty">{uzywajace.length > 0 ? uzywajace.map((instrument) => instrument.data.name).join(", ") : "Nieużywana w tej wersji"}</h2>
+            </div>
+            <dl class="dane">
+              <div><dt>Warunki</dt><dd>{KLASA[entry.data.class]}</dd></div>
+              <div><dt>Stan sprawdzenia</dt><dd>{STATUS[entry.data.status]}, sprawdzono {data(entry.data.verifiedAt)}</dd></div>
+              <div><dt>Prawa do treści</dt><dd>{entry.data.holder}</dd></div>
+              <div><dt>Wersja językowa</dt><dd>{entry.data.translation.type === "none" ? TLUMACZENIE.none : `${TLUMACZENIE[entry.data.translation.type]}, ${jezyk}`}</dd></div>
+              {UPRAWNIENIA.map(([key, label]) => (
+                <div><dt>{label}</dt><dd>{tak(entry.data.permissions[key as keyof typeof entry.data.permissions])}</dd></div>
+              ))}
+            </dl>
+            {entry.data.attribution && <p class="meta">{entry.data.attribution}</p>}
+            {entry.data.notes && <p class="meta">{entry.data.notes}</p>}
+            <p><a href={entry.data.source}>Otwórz źródło</a></p>
+          </article>
+        );
+      })}
+    </div>
   </div>
 </BaseLayout>

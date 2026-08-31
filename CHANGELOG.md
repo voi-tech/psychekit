@@ -11,6 +11,13 @@
 - Switched to self-hosted Geist and Geist Mono variable fonts; the monospaced face carries the instrument codes and scores.
 - Separated the questionnaire name from its technical code: the name is the heading, the code sits underneath it.
 - Removed the footer note.
+- Introduced a token-based design system: one spacing scale, one type scale, one radius scale, and a `.rytm` flow utility, so vertical spacing no longer comes from ad-hoc margins on individual components.
+- Capped running text at about 68 characters. Prose pages ran the full 70rem column while their intro was capped at 48rem, so the same page had two different measures.
+- Rebuilt the header as a grid: brand and appearance control on one row, navigation on its own row below on narrow screens, instead of links wrapping around the toggle.
+- Added the item spine: one tick per question, filled as the questionnaire advances, replacing the abstract progress bar.
+- Custom radio and checkbox indicators, focus ring on the whole option row, and a 2.75rem minimum control height.
+- Bottom-aligned the last element of every grid card so actions line up across a row, and capped result cards so a single scale no longer stretches the full width.
+- Secondary buttons now mark hover with the border rather than a fill; the Latte accent does not reach 4.5:1 on the tinted surface.
 - Translated the whole interface, the error messages, and the exported report into Polish, and removed decorative and technical wording.
 - Service worker: documents are now fetched network-first, and result and history pages are excluded regardless of the trailing slash.
 - CSP script hashes are generated from the built output instead of being maintained by hand.

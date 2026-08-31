@@ -2,12 +2,11 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 ---
 <BaseLayout title="Prywatność" description="Co PsycheKit zapisuje, gdzie i na jak długo.">
-  <div class="hero">
-    <h1>Prywatność</h1>
-    <p>Odpowiedzi i wyniki pozostają w Twojej przeglądarce. PsycheKit nie przesyła ich nigdzie i nie przechowuje na serwerze.</p>
-  </div>
+  <article class="rytm miara">
+    <p class="mikro">Prywatność</p>
+    <h1>Odpowiedzi i wyniki pozostają w Twojej przeglądarce</h1>
+    <p>PsycheKit nie przesyła ich nigdzie i nie przechowuje na serwerze.</p>
 
-  <section class="panel">
     <h2>Co zostaje na Twoim urządzeniu</h2>
     <p>Rozpoczęty kwestionariusz zapisuje się w pamięci przeglądarki, żeby dało się go dokończyć później. Taki zapis znika po siedmiu dniach od ostatniej odpowiedzi. Ukończony wynik trafia do historii wyłącznie wtedy, gdy zaznaczysz to po wypełnieniu. Zapamiętywany jest też wybrany wygląd strony i forma, w jakiej zadawane są pytania.</p>
 
@@ -22,5 +21,5 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 
     <h2>Usuwanie danych</h2>
     <p>Każdy zapisany wynik możesz usunąć pojedynczo lub wszystkie naraz na stronie <a href="/historia/">Historia</a>. Wyczyszczenie danych strony w ustawieniach przeglądarki usuwa wszystko, co PsycheKit zapisał.</p>
-  </section>
+  </article>
 </BaseLayout>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import type { Gender, Instrument } from "@/domain/instrument";
 import { resolveText } from "@/domain/instrument";
 import { CURRENT_RESULT_KEY, type ResultSnapshot } from "@/domain/result";
@@ -10,6 +10,7 @@ import { APP_VERSION } from "@/version";
 type Stage = "forma" | "pytania" | "zapis";
 
 const GENDER_LABELS: Record<Gender, string> = { m: "męska", f: "żeńska" };
+const RYTM_ZWARTY = { "--rytm": "var(--s2)" } as CSSProperties;
 
 export default function TestRunner({ instrument }: { instrument: Instrument }) {
   const sessionId = `aktywna:${instrument.id}`;
@@ -40,13 +41,17 @@ export default function TestRunner({ instrument }: { instrument: Instrument }) {
     return () => { active = false; };
   }, [instrument.items.length, sessionId]);
 
-  if (!ready) return (
-    <div className="panel" aria-live="polite">
-      <h1>{instrument.name}</h1>
-      <p className="kod">{instrument.code}</p>
-      <p>Wczytywanie kwestionariusza…</p>
-    </div>
-  );
+  if (!ready) {
+    return (
+      <section className="panel rytm miara-formularz" aria-live="polite">
+        <div className="rytm" style={RYTM_ZWARTY}>
+          <h1>{instrument.name}</h1>
+          <p className="kod">{instrument.code}</p>
+        </div>
+        <p className="meta">Wczytywanie kwestionariusza…</p>
+      </section>
+    );
+  }
 
   if (stage === "forma") {
     return (
@@ -59,13 +64,11 @@ export default function TestRunner({ instrument }: { instrument: Instrument }) {
     );
   }
 
-  if (stage === "zapis" && snapshot) {
-    return <SavePrompt snapshot={snapshot} />;
-  }
+  if (stage === "zapis" && snapshot) return <SavePrompt snapshot={snapshot} />;
 
   const item = instrument.items[index];
   const optionSet = instrument.optionSets[item.optionSet];
-  const percent = ((index + 1) / instrument.items.length) * 100;
+  const total = instrument.items.length;
 
   const persistSession = (nextResponses: Record<string, string>, nextIndex: number) =>
     saveSession({ id: sessionId, instrumentId: instrument.id, gender, responses: nextResponses, currentIndex: nextIndex });
@@ -111,7 +114,7 @@ export default function TestRunner({ instrument }: { instrument: Instrument }) {
     }
   };
 
-  const isLast = index === instrument.items.length - 1;
+  const isLast = index === total - 1;
   const goNext = () => {
     if (!responses[item.id]) { setError("Wybierz jedną odpowiedź, aby przejść dalej."); return; }
     setError("");
@@ -122,26 +125,34 @@ export default function TestRunner({ instrument }: { instrument: Instrument }) {
   const goBack = () => { setError(""); setIndex(Math.max(0, index - 1)); };
 
   return (
-    <section aria-labelledby="tytul-kwestionariusza" className="panel">
-      <h1 id="tytul-kwestionariusza">{instrument.name}</h1>
-      <p className="kod">{instrument.code}</p>
-      <p className="meta">Pytanie {index + 1} z {instrument.items.length} · forma {GENDER_LABELS[gender]}{" "}
-        <button className="secondary" type="button" onClick={() => setStage("forma")}>Zmień formę</button>
-      </p>
+    <section className="panel rytm miara-formularz" aria-labelledby="tytul-kwestionariusza">
+      <div className="rytm" style={{ "--rytm": "var(--s1)" } as CSSProperties}>
+        <p className="mikro">Pytanie {index + 1} z {total}</p>
+        <h1 id="tytul-kwestionariusza" className="tytul-cichy">{instrument.name}</h1>
+        <p className="kod">{instrument.code}</p>
+      </div>
+
       <div
-        className="progress"
+        className="podzialka"
         role="progressbar"
         aria-label="Postęp wypełniania"
         aria-valuemin={1}
-        aria-valuemax={instrument.items.length}
+        aria-valuemax={total}
         aria-valuenow={index + 1}
       >
-        <span style={{ width: `${percent}%` }} />
+        {instrument.items.map((candidate, position) => (
+          <span
+            key={candidate.id}
+            aria-hidden="true"
+            className={position === index ? "biezace" : responses[candidate.id] ? "odpowiedziane" : undefined}
+          />
+        ))}
       </div>
-      <fieldset className="options">
-        <legend><strong>{resolveText(item.text, gender)}</strong></legend>
+
+      <fieldset className="opcje">
+        <legend>{resolveText(item.text, gender)}</legend>
         {optionSet.options.map((option) => (
-          <label className="option" key={option.id}>
+          <label className="opcja" key={option.id}>
             <input
               type="radio"
               name={item.id}
@@ -153,12 +164,21 @@ export default function TestRunner({ instrument }: { instrument: Instrument }) {
           </label>
         ))}
       </fieldset>
-      {error && <p role="alert" className="notice">{error}</p>}
-      <div className="question-actions">
-        <button className="secondary" type="button" onClick={goBack} disabled={index === 0}>Wstecz</button>
-        <button type="button" onClick={goNext}>{isLast ? "Pokaż wynik" : "Dalej"}</button>
+
+      {error && <p role="alert" className="notice danger">{error}</p>}
+
+      <div className="akcje akcje-rozdzielone">
+        <button className="btn btn-drugi" type="button" onClick={goBack} disabled={index === 0}>Wstecz</button>
+        <button className="btn" type="button" onClick={goNext}>{isLast ? "Pokaż wynik" : "Dalej"}</button>
       </div>
-      <p className="meta">Rozpoczęty kwestionariusz zapisuje się na tym urządzeniu i wygasa po siedmiu dniach.</p>
+
+      <div className="meta stopka-panelu">
+        <span>
+          Forma {GENDER_LABELS[gender]}
+          <button className="btn btn-tekst" type="button" onClick={() => setStage("forma")}>Zmień formę</button>
+        </span>
+        <span>Rozpoczęty kwestionariusz zapisuje się na tym urządzeniu i wygasa po siedmiu dniach.</span>
+      </div>
     </section>
   );
 }
@@ -170,26 +190,33 @@ function GenderChoice({ instrument, gender, onGenderChange, onStart }: {
   onStart: () => void;
 }) {
   return (
-    <section className="panel" aria-labelledby="tytul-formy">
-      <h1 id="tytul-formy">{instrument.name}</h1>
-      <p className="kod">{instrument.code}</p>
-      <p>{instrument.subtitle}</p>
-      <p className="meta">{instrument.items.length} pytań · około {instrument.estimatedMinutes} minut</p>
-      <fieldset className="options">
-        <legend><strong>W jakiej formie mają być zadawane pytania?</strong></legend>
+    <section className="panel rytm miara-formularz" aria-labelledby="tytul-formy">
+      <div className="rytm" style={RYTM_ZWARTY}>
+        <h1 id="tytul-formy">{instrument.name}</h1>
+        <p className="kod">{instrument.code}</p>
+        <p>{instrument.subtitle}</p>
+        <p className="meta">{instrument.items.length} pytań · około {instrument.estimatedMinutes} minut</p>
+      </div>
+
+      <fieldset className="opcje">
+        <legend>W jakiej formie mają być zadawane pytania?</legend>
         {(["m", "f"] as Gender[]).map((value) => (
-          <label className="option" key={value}>
+          <label className="opcja" key={value}>
             <input type="radio" name="forma" value={value} checked={gender === value} onChange={() => onGenderChange(value)} />
             Forma {GENDER_LABELS[value]}
           </label>
         ))}
       </fieldset>
       <p className="meta">Wybór wpływa tylko na brzmienie pytań i zostaje zapamiętany na tym urządzeniu.</p>
-      {instrument.adaptationNotice && <p className="meta">{instrument.adaptationNotice}</p>}
-      <p className="notice">{instrument.disclaimer}</p>
-      <div className="question-actions">
+
+      <div className="notice">
+        <p>{instrument.disclaimer}</p>
+        {instrument.adaptationNotice && <p className="meta">{instrument.adaptationNotice}</p>}
+      </div>
+
+      <div className="akcje akcje-rozdzielone">
         <a href="/">Wróć do listy</a>
-        <button type="button" onClick={onStart}>Rozpocznij</button>
+        <button className="btn" type="button" onClick={onStart}>Rozpocznij</button>
       </div>
     </section>
   );
@@ -208,18 +235,20 @@ function SavePrompt({ snapshot }: { snapshot: ResultSnapshot }) {
   };
 
   return (
-    <div className="panel" aria-live="polite">
-      <h1>Wynik jest gotowy</h1>
-      <p>Czy zapisać ten wynik w historii na tym urządzeniu?</p>
-      <p className="meta">Zapisany wynik pozostaje na tym urządzeniu do czasu, aż go usuniesz. Bez zapisu zobaczysz go tylko teraz.</p>
-      <label className="option">
+    <section className="panel rytm miara-formularz" aria-live="polite">
+      <div className="rytm" style={RYTM_ZWARTY}>
+        <h1>Wynik jest gotowy</h1>
+        <p className="kod">{snapshot.name} · {snapshot.code}</p>
+      </div>
+      <p>Czy zapisać ten wynik w historii na tym urządzeniu? Zapisany wynik zostaje tutaj, dopóki go nie usuniesz. Bez zapisu zobaczysz go tylko teraz.</p>
+      <label className="opcja">
         <input type="checkbox" checked={saveChoice} onChange={(event) => setSaveChoice(event.target.checked)} />
         Zapisz wynik w historii
       </label>
-      <div className="question-actions">
-        <button className="secondary" type="button" disabled={busy} onClick={() => void finishUp(false)}>Pokaż bez zapisywania</button>
-        <button type="button" disabled={busy} onClick={() => void finishUp(saveChoice)}>Przejdź do wyniku</button>
+      <div className="akcje">
+        <button className="btn" type="button" disabled={busy} onClick={() => void finishUp(saveChoice)}>Przejdź do wyniku</button>
+        <button className="btn btn-drugi" type="button" disabled={busy} onClick={() => void finishUp(false)}>Pokaż bez zapisywania</button>
       </div>
-    </div>
+    </section>
   );
 }
