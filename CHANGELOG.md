@@ -24,6 +24,11 @@
 - Added optional short option labels. IPIP-BFM-20 repeated "mnie opisuje" in all five options; the repetition moved into the stem while the full official wording stays as the accessible name and in the report.
 - Choosing an answer now advances to the next question on its own. The last question waits for an explicit finish.
 - Content columns are centered on the page instead of hugging the left edge.
+- Collapsed the stylesheet onto one spacing mechanism. `.stos` is now the only source of vertical spacing; the margin-based flow utility with its per-element exceptions is gone, along with every inline `--rytm` override in the components. Six spacing steps and eight type sizes cover the whole interface, and no rule uses a value from outside them.
+- Merged duplicated components: one `.karta` surface (was `.karta` plus `.panel`), one `.dane` pair list (was `.dane` plus `.kontakty`), one `.tytul-poboczny` (was `.tytul-cichy` plus `.tytul-karty`), one `.siatka` with two named variants (was three grid classes), one `.miara` (was two). No unused selector remains in the stylesheet.
+- Redrew the response scale as a single axis of points with the label under each point, instead of five bordered fields each carrying its own line of text.
+- Replaced `fieldset`/`legend` with `role="radiogroup"`. A legend does not take part in the grid, so it never received the gap — which is why the scale sat too close to the question.
+- Shortened the IPIP-BFM-20 option labels to degree words, so no word repeats across the five points.
 - Translated the whole interface, the error messages, and the exported report into Polish, and removed decorative and technical wording.
 - Service worker: documents are now fetched network-first, and result and history pages are excluded regardless of the trailing slash.
 - CSP script hashes are generated from the built output instead of being maintained by hand.

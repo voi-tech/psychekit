@@ -1,4 +1,4 @@
-import { useEffect, useState, type CSSProperties } from "react";
+import { useEffect, useState } from "react";
 import { buildMarkdownReport } from "@/domain/report/markdown";
 import { CURRENT_RESULT_KEY, type ResultSnapshot } from "@/domain/result";
 
@@ -8,8 +8,6 @@ const HELPLINES = [
   { label: "Centrum wsparcia dla osób w kryzysie", number: "800 70 2222", href: "tel:800702222" },
   { label: "Telefon zaufania dla dzieci i młodzieży", number: "116 111", href: "tel:116111" },
 ];
-
-const RYTM_ZWARTY = { "--rytm": "var(--s2)" } as CSSProperties;
 
 export default function ResultView() {
   const [snapshot, setSnapshot] = useState<ResultSnapshot | null>(null);
@@ -23,7 +21,7 @@ export default function ResultView() {
 
   if (!snapshot) {
     return (
-      <section className="panel rytm miara-formularz">
+      <section className="karta stos miara-szeroka">
         <h1>Nie ma wyniku do pokazania</h1>
         <p>Wynik pojawi się tutaj po wypełnieniu kwestionariusza. Nie trafia do historii, dopóki tego nie wybierzesz.</p>
         <p><a className="btn" href="/">Wybierz kwestionariusz</a></p>
@@ -49,30 +47,30 @@ export default function ResultView() {
   };
 
   return (
-    <div className="rytm" style={{ "--rytm": "var(--s6)" } as CSSProperties}>
-      <header className="rytm" style={RYTM_ZWARTY}>
+    <div className="stos stos-sekcje">
+      <header className="stos stos-zwarty miara">
         <h1>{snapshot.name}</h1>
         <p className="kod">{snapshot.code}</p>
         <p className="meta">Wypełniono {new Date(snapshot.completedAt).toLocaleString("pl-PL")}</p>
       </header>
 
-      <div className="siatka-wynikow">
+      <div className="siatka siatka-zwarta">
         {snapshot.results.map((result) => (
-          <article className="karta rytm" style={RYTM_ZWARTY} key={result.title}>
-            <h2 className="tytul-karty">{result.title}</h2>
+          <article className="karta stos stos-zwarty" key={result.title}>
+            <h2 className="tytul-poboczny">{result.title}</h2>
             <p className="punkty"><b>{result.score}</b> <span>na {result.max}</span></p>
             {result.band
-              ? <p><span className="plakietka">{result.band}</span></p>
+              ? <p className="plakietka">{result.band}</p>
               : <p className="meta">Punktacja od {result.min} do {result.max}, bez podziału na przedziały.</p>}
           </article>
         ))}
       </div>
 
       {snapshot.safetyMessages.map((message) => (
-        <div className="notice danger rytm miara" key={message}>
+        <div className="notice danger stos miara" key={message}>
           <p className="mikro">Ważne</p>
           <p>{message}</p>
-          <dl className="kontakty">
+          <dl className="dane">
             {HELPLINES.map((line) => (
               <div key={line.number}>
                 <dt>{line.label}</dt>
@@ -83,12 +81,12 @@ export default function ResultView() {
         </div>
       ))}
 
-      <div className="rytm miara">
+      <div className="stos miara">
         <p className="notice">{snapshot.disclaimer}</p>
         {snapshot.adaptationNotice && <p className="meta">{snapshot.adaptationNotice}</p>}
       </div>
 
-      <section className="rytm miara" aria-labelledby="zabierz-wynik">
+      <section className="stos miara" aria-labelledby="zabierz-wynik">
         <h2 id="zabierz-wynik">Zabierz wynik ze sobą</h2>
         <p>Raport zawiera wyniki skal, zastrzeżenia i źródła. Nie zawiera odpowiedzi na poszczególne pytania.</p>
         <div className="akcje">
@@ -99,7 +97,7 @@ export default function ResultView() {
         <p className="meta">Jeśli wkleisz skopiowany tekst do zewnętrznej usługi, na przykład do asystenta opartego na sztucznej inteligencji, dane opuszczą PsycheKit i zaczną podlegać zasadom tej usługi.</p>
       </section>
 
-      <section className="rytm miara" aria-labelledby="zrodla">
+      <section className="stos miara" aria-labelledby="zrodla">
         <h2 id="zrodla">Źródła</h2>
         <ul>{snapshot.sources.map((source) => <li key={source}><a href={source}>{source}</a></li>)}</ul>
         {snapshot.attribution && <p className="meta">{snapshot.attribution}</p>}

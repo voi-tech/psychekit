@@ -15,42 +15,37 @@
   font-display: swap;
 }
 
-/* ------------------------------------------------------------------
-   Tokeny. Każdy odstęp, rozmiar i promień w arkuszu pochodzi stąd.
-   ------------------------------------------------------------------ */
+/* ==================================================================
+   1. Tokeny
+   Sześć odstępów i osiem rozmiarów pisma. Nic poniżej nie używa
+   wartości spoza tej listy, więc każdy odstęp na stronie jest jednym
+   z sześciu.
+   ================================================================== */
 :root {
-  --s1: .25rem;
-  --s2: .5rem;
-  --s3: .75rem;
-  --s4: 1rem;
-  --s5: 1.5rem;
-  --s6: 2rem;
-  --s7: 3rem;
-  --s8: 4rem;
-  --s9: 6rem;
+  --odstep-xs: .25rem;
+  --odstep-s: .5rem;
+  --odstep-m: 1rem;
+  --odstep-l: 1.5rem;
+  --odstep-xl: 2rem;
+  --odstep-xxl: 3rem;
 
-  --t-mikro: .75rem;
-  --t-maly: .875rem;
-  --t-bazowy: 1.0625rem;
-  --t-duzy: 1.1875rem;
-  --t-h3: 1.3125rem;
-  --t-h2: clamp(1.5rem, 1.25rem + .9vw, 1.875rem);
-  --t-h1: clamp(1.875rem, 1.45rem + 1.9vw, 2.625rem);
-  --t-pytanie: clamp(1.25rem, 1.1rem + .7vw, 1.5rem);
-  --t-wynik: clamp(2.25rem, 1.8rem + 2vw, 3rem);
+  --pismo-mikro: .75rem;
+  --pismo-male: .875rem;
+  --pismo-bazowe: 1.0625rem;
+  --pismo-duze: 1.1875rem;
+  --pismo-pytanie: clamp(1.25rem, 1.1rem + .7vw, 1.5rem);
+  --pismo-naglowek: clamp(1.5rem, 1.25rem + .9vw, 1.875rem);
+  --pismo-tytul: clamp(1.875rem, 1.45rem + 1.9vw, 2.625rem);
+  --pismo-wynik: clamp(2.25rem, 1.8rem + 2vw, 3rem);
 
-  --promien-s: .375rem;
-  --promien-m: .625rem;
-  --promien-l: 1rem;
+  --promien: .625rem;
+  --promien-duzy: 1rem;
+  --kreska: 1px;
 
-  /* Miara tekstu ciągłego: około 68 znaków. Siatki mogą być szersze. */
+  /* Miara tekstu ciągłego: około 68 znaków. */
   --miara: 36rem;
-  /* Formularz znosi nieco większą szerokość niż tekst ciągły. */
-  --miara-formularz: 40rem;
   --szerokosc: 64rem;
-  --margines-boczny: clamp(1rem, 5vw, 2rem);
-
-  --grubosc-znacznika: 1px;
+  --margines: clamp(1rem, 5vw, 2rem);
 }
 
 /* Catppuccin Latte */
@@ -58,7 +53,6 @@
   color-scheme: light;
   --tlo: #e6e9ef;
   --tlo-wypukle: #eff1f5;
-  --tlo-wglebienie: #dce0e8;
   --tlo-zaznaczone: #ccd0da;
   --obramowanie: #ccd0da;
   --obramowanie-mocne: #acb0be;
@@ -77,7 +71,6 @@
     color-scheme: dark;
     --tlo: #181825;
     --tlo-wypukle: #1e1e2e;
-    --tlo-wglebienie: #11111b;
     --tlo-zaznaczone: #313244;
     --obramowanie: #313244;
     --obramowanie-mocne: #585b70;
@@ -95,7 +88,6 @@
   color-scheme: dark;
   --tlo: #181825;
   --tlo-wypukle: #1e1e2e;
-  --tlo-wglebienie: #11111b;
   --tlo-zaznaczone: #313244;
   --obramowanie: #313244;
   --obramowanie-mocne: #585b70;
@@ -108,11 +100,10 @@
   --cien: 0 1px 1px rgb(17 17 27 / 40%), 0 4px 14px rgb(17 17 27 / 40%);
 }
 
-/* ------------------------------------------------------------------
-   Podstawy
-   ------------------------------------------------------------------ */
+/* ==================================================================
+   2. Podstawy
+   ================================================================== */
 *, *::before, *::after { box-sizing: border-box; }
-
 html { -webkit-text-size-adjust: 100%; }
 
 body {
@@ -120,20 +111,20 @@ body {
   background: var(--tlo);
   color: var(--tekst);
   font-family: Geist, ui-sans-serif, system-ui, sans-serif;
-  font-size: var(--t-bazowy);
+  font-size: var(--pismo-bazowe);
   line-height: 1.6;
   font-variant-numeric: tabular-nums;
 }
 
-h1, h2, h3, h4, p, ul, ol, dl, dd, figure, fieldset, blockquote { margin: 0; }
-ul, ol { padding-left: 1.15em; }
-li + li { margin-top: var(--s2); }
+/* Żaden element nie nosi własnego marginesu: odstęp pionowy daje wyłącznie .stos. */
+h1, h2, h3, p, ul, ol, dl, dd, figure, fieldset, legend, blockquote { margin: 0; }
 fieldset { border: 0; padding: 0; min-inline-size: 0; }
+ul, ol { padding-left: 1.15em; display: grid; gap: var(--odstep-s); }
 
 h1, h2, h3 { font-weight: 600; letter-spacing: -.02em; line-height: 1.2; text-wrap: balance; }
-h1 { font-size: var(--t-h1); }
-h2 { font-size: var(--t-h2); }
-h3 { font-size: var(--t-h3); letter-spacing: -.01em; }
+h1 { font-size: var(--pismo-tytul); }
+h2 { font-size: var(--pismo-naglowek); }
+h3 { font-size: var(--pismo-duze); letter-spacing: -.01em; }
 p { text-wrap: pretty; }
 
 a { color: var(--akcent); text-underline-offset: .2em; text-decoration-thickness: .07em; }
@@ -141,102 +132,108 @@ a:hover { text-decoration-thickness: .12em; }
 li a, dd a { overflow-wrap: anywhere; }
 
 :where(button, input, select, textarea) { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--akcent); outline-offset: 2px; border-radius: var(--promien); }
 
-:focus-visible { outline: 2px solid var(--akcent); outline-offset: 2px; border-radius: var(--promien-s); }
+/* ==================================================================
+   3. Układ
+   .stos to jedyny mechanizm odstępu pionowego w całej aplikacji.
+   ================================================================== */
+.stos { display: grid; gap: var(--odstep, var(--odstep-m)); align-content: start; }
+.stos-zwarty { --odstep: var(--odstep-s); }
+.stos-luzny { --odstep: var(--odstep-xl); }
+.stos-sekcje { --odstep: var(--odstep-xxl); }
 
-/* ------------------------------------------------------------------
-   Rytm pionowy. Zamiast marginesów doklejanych do komponentów.
-   ------------------------------------------------------------------ */
-.rytm > * + * { margin-block-start: var(--rytm, var(--s4)); }
-.rytm > * + :is(h2, h3) { margin-block-start: var(--s6); }
-.rytm > :is(h2, h3) + * { margin-block-start: var(--s3); }
-.rytm > * + .notice, .rytm > .notice + * { margin-block-start: var(--s5); }
-
+.shell { width: min(100% - 2 * var(--margines), var(--szerokosc)); margin-inline: auto; }
 .miara { max-width: var(--miara); margin-inline: auto; }
-/* Ekrany wypełniania są jedynym zadaniem strony, więc stoją na jej osi. */
-.miara-formularz { max-width: var(--miara-formularz); margin-inline: auto; }
-.mikro {
-  font-family: "Geist Mono", ui-monospace, monospace;
-  font-size: var(--t-mikro);
-  font-weight: 500;
-  letter-spacing: .09em;
-  text-transform: uppercase;
-  color: var(--tekst-drugorzedny);
-}
-.kod {
-  font-family: "Geist Mono", ui-monospace, monospace;
-  font-size: var(--t-maly);
-  letter-spacing: .02em;
-  color: var(--tekst-drugorzedny);
-}
-.meta { color: var(--tekst-drugorzedny); font-size: var(--t-maly); }
-.sr-only {
-  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
-  overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0;
-}
+.miara-szeroka { max-width: 40rem; margin-inline: auto; }
 
-/* ------------------------------------------------------------------
-   Układ strony
-   ------------------------------------------------------------------ */
-.shell { width: min(100% - 2 * var(--margines-boczny), var(--szerokosc)); margin-inline: auto; }
+.siatka { display: grid; gap: var(--odstep-m); grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); }
+.siatka-szeroka { grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr)); }
+.siatka-zwarta { grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 20rem)); justify-content: start; }
+
+main { display: block; padding-block: var(--odstep-xxl); }
 
 .pomin {
-  position: absolute; left: -9999px; top: var(--s3); z-index: 10;
+  position: absolute; left: -9999px; top: var(--odstep-m); z-index: 10;
   background: var(--tlo-wypukle); color: var(--tekst);
-  padding: var(--s3) var(--s4);
-  border: var(--grubosc-znacznika) solid var(--akcent);
-  border-radius: var(--promien-m);
+  padding: var(--odstep-m) var(--odstep-l);
+  border: var(--kreska) solid var(--akcent); border-radius: var(--promien);
 }
-.pomin:focus { left: var(--s4); }
+.pomin:focus { left: var(--odstep-m); }
 
-.pasek { border-bottom: var(--grubosc-znacznika) solid var(--obramowanie); background: var(--tlo-wypukle); }
+.pasek { border-bottom: var(--kreska) solid var(--obramowanie); background: var(--tlo-wypukle); }
 .pasek-uklad {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: var(--s4);
-  padding-block: var(--s3);
+  display: grid; grid-template-columns: auto 1fr auto;
+  align-items: center; gap: var(--odstep-m);
+  padding-block: var(--odstep-m);
 }
-.marka {
-  font-size: var(--t-duzy); font-weight: 600; letter-spacing: -.02em;
-  color: var(--tekst); text-decoration: none;
-}
-.pasek-linki { display: flex; flex-wrap: wrap; gap: var(--s2) var(--s4); }
-.pasek-linki a {
-  color: var(--tekst); text-decoration: none;
-  font-size: var(--t-maly); padding-block: var(--s1);
-}
+.marka { font-size: var(--pismo-duze); font-weight: 600; letter-spacing: -.02em; color: var(--tekst); text-decoration: none; }
+.pasek-linki { display: flex; flex-wrap: wrap; gap: var(--odstep-s) var(--odstep-m); }
+.pasek-linki a { color: var(--tekst); text-decoration: none; font-size: var(--pismo-male); padding-block: var(--odstep-xs); }
 .pasek-linki a:hover { text-decoration: underline; }
-.pasek-linki a[aria-current="page"] {
-  color: var(--akcent); font-weight: 500;
-  text-decoration: underline; text-decoration-thickness: .1em;
+.pasek-linki a[aria-current="page"] { color: var(--akcent); font-weight: 500; text-decoration: underline; text-decoration-thickness: .1em; }
+
+/* ==================================================================
+   4. Tekst pomocniczy
+   ================================================================== */
+.mikro {
+  font-family: "Geist Mono", ui-monospace, monospace;
+  font-size: var(--pismo-mikro); font-weight: 500;
+  letter-spacing: .09em; text-transform: uppercase;
+  color: var(--tekst-drugorzedny);
 }
+.kod { font-family: "Geist Mono", ui-monospace, monospace; font-size: var(--pismo-male); letter-spacing: .02em; color: var(--tekst-drugorzedny); }
+.meta { color: var(--tekst-drugorzedny); font-size: var(--pismo-male); }
+.tytul-poboczny { font-size: var(--pismo-duze); font-weight: 600; letter-spacing: -.01em; line-height: 1.25; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
 
-main { display: block; padding-block: var(--s7) var(--s9); }
+/* ==================================================================
+   5. Powierzchnie
+   Jedna karta w całej aplikacji, jedno wypełnienie.
+   ================================================================== */
+.karta {
+  background: var(--tlo-wypukle);
+  border: var(--kreska) solid var(--obramowanie);
+  border-radius: var(--promien-duzy);
+  box-shadow: var(--cien);
+  padding: var(--odstep-l);
+}
+/* Ostatni element karty siada przy dolnej krawędzi, żeby akcje w siatce leżały w jednej linii. */
+.siatka > .karta > :last-child { margin-block-start: auto; }
 
-/* ------------------------------------------------------------------
-   Przyciski
-   ------------------------------------------------------------------ */
+.notice {
+  background: var(--tlo-wypukle);
+  border: var(--kreska) solid var(--obramowanie);
+  border-left: 3px solid var(--uwaga);
+  border-radius: var(--promien);
+  padding: var(--odstep-m) var(--odstep-l);
+}
+.notice.danger { border-left-color: var(--ostrzezenie); }
+
+.stopka { padding-block-start: var(--odstep-m); border-top: var(--kreska) solid var(--obramowanie); }
+
+/* ==================================================================
+   6. Przyciski
+   ================================================================== */
 .btn {
-  display: inline-flex; align-items: center; justify-content: center; gap: var(--s2);
-  min-height: 2.75rem;
-  padding: var(--s3) var(--s5);
-  border: var(--grubosc-znacznika) solid var(--akcent);
-  border-radius: var(--promien-m);
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--odstep-s);
+  min-height: 2.75rem; padding: var(--odstep-s) var(--odstep-l);
+  border: var(--kreska) solid var(--akcent); border-radius: var(--promien);
   background: var(--akcent); color: var(--na-akcencie);
-  font-size: var(--t-maly); font-weight: 500; text-decoration: none;
+  font-size: var(--pismo-male); font-weight: 500; text-decoration: none;
   cursor: pointer;
 }
 .btn:hover { filter: brightness(1.06); }
 .btn:disabled { opacity: .45; cursor: not-allowed; filter: none; }
 
+/* Akcent Latte nie osiąga 4.5:1 na przyciemnionym tle, więc najechanie zmienia obramowanie, nie wypełnienie. */
 .btn-drugi { background: transparent; color: var(--akcent); border-color: var(--obramowanie-mocne); }
-.btn-drugi:hover { border-color: var(--akcent); background: transparent; filter: none; }
+.btn-drugi:hover { background: transparent; border-color: var(--akcent); filter: none; }
 
 .btn-tekst {
-  min-height: auto; padding: var(--s1) var(--s2);
+  min-height: 0; padding: var(--odstep-xs) var(--odstep-s);
   background: transparent; color: var(--akcent); border-color: transparent;
-  font-size: var(--t-mikro); text-decoration: underline; text-underline-offset: .2em;
+  font-size: var(--pismo-mikro); text-decoration: underline; text-underline-offset: .2em;
 }
 .btn-tekst:hover { background: transparent; filter: none; text-decoration-thickness: .12em; }
 
@@ -246,214 +243,122 @@ main { display: block; padding-block: var(--s7) var(--s9); }
 }
 .btn-ikona:hover { background: var(--tlo-zaznaczone); filter: none; }
 
-.akcje { display: flex; flex-wrap: wrap; gap: var(--s3); margin-block-start: var(--s6); }
+.akcje { display: flex; flex-wrap: wrap; gap: var(--odstep-m); }
 .akcje-rozdzielone { justify-content: space-between; align-items: center; }
 
-/* ------------------------------------------------------------------
-   Powierzchnie
-   ------------------------------------------------------------------ */
-.karta, .panel {
-  background: var(--tlo-wypukle);
-  border: var(--grubosc-znacznika) solid var(--obramowanie);
-  border-radius: var(--promien-l);
-  box-shadow: var(--cien);
-}
-.karta { padding: var(--s5); container-type: inline-size; display: flex; flex-direction: column; }
-/* Ostatni element karty siada przy dolnej krawędzi, żeby przyciski w siatce leżały w jednej linii. */
-.siatka-kart > .karta > :last-child { margin-block-start: auto; padding-block-start: var(--s4); }
-.panel { padding: clamp(var(--s5), 4vw, var(--s6)); }
-
-.siatka-kart {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
-  gap: var(--s4);
-}
-/* Karty z listą par etykieta – wartość potrzebują szerokości na dwie kolumny. */
-.siatka-kart-szerokie { grid-template-columns: repeat(auto-fit, minmax(24rem, 1fr)); }
-
-.notice {
-  background: var(--tlo-wypukle);
-  border: var(--grubosc-znacznika) solid var(--obramowanie);
-  border-left: 3px solid var(--uwaga);
-  border-radius: var(--promien-s) var(--promien-m) var(--promien-m) var(--promien-s);
-  padding: var(--s4) var(--s5);
-}
-.notice.danger { border-left-color: var(--ostrzezenie); }
-.notice > * + * { margin-block-start: var(--s3); }
-
-/* ------------------------------------------------------------------
-   Sygnatura: podziałka pozycji. Jeden znacznik na pytanie.
-   ------------------------------------------------------------------ */
-.podzialka { display: flex; gap: 2px; height: .5rem; }
-.podzialka span {
-  flex: 1 1 0;
-  min-width: 2px;
-  border-radius: 1px;
-  background: var(--obramowanie);
-}
-.podzialka .odpowiedziane { background: var(--akcent); }
-.podzialka .biezace { background: var(--akcent); box-shadow: 0 0 0 2px var(--tlo-wypukle), 0 0 0 3px var(--akcent); }
-
-/* ------------------------------------------------------------------
-   Opcje odpowiedzi
-   ------------------------------------------------------------------ */
-.opcje { display: grid; gap: var(--s2); }
-.opcje legend {
-  font-size: var(--t-duzy); font-weight: 500; line-height: 1.4;
-  text-wrap: pretty; margin-block-end: var(--s4);
-}
-
-/* ------------------------------------------------------------------
-   Skala odpowiedzi. Pozycje kwestionariusza są porządkowe, więc stopnie
-   stoją obok siebie, a powtarzająca się część brzmienia wychodzi
-   do pytania wiodącego nad nimi.
-   ------------------------------------------------------------------ */
-.pytanie { display: grid; gap: var(--s5); }
-.pytanie-legenda { display: block; }
-/* Pytanie wiodące to całe zdanie, więc zostaje w zwykłym zapisie — wersaliki męczą przy dłuższym tekście. */
-.pytanie-stem { display: block; margin-block-end: var(--s2); font-size: var(--t-maly); color: var(--tekst-drugorzedny); }
-.pytanie-tresc {
-  display: block;
-  font-size: var(--t-pytanie); font-weight: 500; line-height: 1.35;
-  text-wrap: pretty;
-}
-
-.skala { display: grid; grid-template-columns: repeat(var(--stopnie, 4), 1fr); gap: var(--s2); }
-.stopien {
-  position: relative;
-  display: flex; flex-direction: column; align-items: center; gap: var(--s2);
-  padding: var(--s4) var(--s2);
-  border: var(--grubosc-znacznika) solid var(--obramowanie-mocne);
-  border-radius: var(--promien-m);
-  background: var(--tlo-wypukle);
-  text-align: center;
-  cursor: pointer;
-}
-.stopien input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
-.stopien-znacznik {
-  flex: none; width: 1.15rem; height: 1.15rem;
-  display: grid; place-content: center;
-  border: 1.5px solid var(--obramowanie-mocne); border-radius: 50%;
-}
-.stopien-znacznik::before { content: ""; width: .55rem; height: .55rem; border-radius: 50%; background: var(--akcent); transform: scale(0); }
-.stopien-etykieta { font-size: var(--t-maly); line-height: 1.3; }
-.stopien:hover { border-color: var(--akcent); }
-.stopien:has(input:focus-visible) { outline: 2px solid var(--akcent); outline-offset: 2px; }
-.stopien:has(input:checked) { border-color: var(--akcent); background: var(--tlo-zaznaczone); }
-.stopien:has(input:checked) .stopien-znacznik { border-color: var(--akcent); }
-.stopien:has(input:checked) .stopien-znacznik::before { transform: scale(1); }
-
-@media (max-width: 34rem) {
-  .skala { grid-template-columns: 1fr; }
-  .stopien { flex-direction: row; justify-content: flex-start; padding: var(--s3) var(--s4); text-align: left; }
-  .stopien-etykieta { font-size: var(--t-maly); }
-}
-
-.tytul-cichy { font-size: var(--t-duzy); font-weight: 500; letter-spacing: -.01em; color: var(--tekst-drugorzedny); }
-.tytul-karty { font-size: var(--t-duzy); }
-.stopka-panelu {
-  display: grid; gap: var(--s1);
-  padding-block-start: var(--s4);
-  border-top: var(--grubosc-znacznika) solid var(--obramowanie);
-}
-.stopka-panelu > span { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: var(--s2); }
-
-.opcja {
-  display: flex; align-items: flex-start; gap: var(--s3);
-  padding: var(--s3) var(--s4);
-  border: var(--grubosc-znacznika) solid var(--obramowanie-mocne);
-  border-radius: var(--promien-m);
-  background: var(--tlo-wypukle);
-  cursor: pointer;
-}
-.opcja:hover { border-color: var(--akcent); }
-.opcja:has(input:checked) { border-color: var(--akcent); background: var(--tlo-zaznaczone); }
-.opcja:has(input:focus-visible) { outline: 2px solid var(--akcent); outline-offset: 2px; }
-.opcja input:focus-visible { outline: none; }
-
-.opcja input {
-  appearance: none;
-  flex: none;
-  width: 1.15rem; height: 1.15rem;
-  margin: .22em 0 0;
-  display: grid; place-content: center;
-  border: 1.5px solid var(--obramowanie-mocne);
-  background: var(--tlo);
-  cursor: pointer;
-}
-.opcja input[type="radio"] { border-radius: 50%; }
-.opcja input[type="checkbox"] { border-radius: var(--promien-s); }
-.opcja input::before {
-  content: ""; width: .55rem; height: .55rem; transform: scale(0);
-  background: var(--akcent);
-}
-.opcja input[type="radio"]::before { border-radius: 50%; }
-.opcja input[type="checkbox"]::before { border-radius: 1px; }
-.opcja input:checked { border-color: var(--akcent); }
-.opcja input:checked::before { transform: scale(1); }
-
-/* ------------------------------------------------------------------
-   Wynik
-   ------------------------------------------------------------------ */
-/* Górna granica toru pilnuje, żeby pojedyncza skala nie rozciągała się na całą szerokość. */
-.siatka-wynikow {
-  display: grid; gap: var(--s4);
-  grid-template-columns: repeat(auto-fit, minmax(15rem, 20rem));
-  justify-content: start;
-}
-.punkty {
-  display: flex; align-items: baseline; gap: var(--s2);
-  font-family: "Geist Mono", ui-monospace, monospace;
-  font-variant-numeric: tabular-nums;
-}
-.punkty b { font-size: var(--t-wynik); font-weight: 600; line-height: 1; letter-spacing: -.03em; }
-.punkty span { font-size: var(--t-maly); color: var(--tekst-drugorzedny); }
-.plakietka {
-  display: inline-block;
-  padding: var(--s1) var(--s3);
-  border: var(--grubosc-znacznika) solid var(--obramowanie-mocne);
-  border-radius: 999px;
-  font-size: var(--t-maly);
-}
-
-/* ------------------------------------------------------------------
-   Pary etykieta – wartość
-   ------------------------------------------------------------------ */
-.dane { display: grid; gap: var(--s3); }
-.dane > div { display: grid; gap: var(--s1); }
-.dane dt { font-family: "Geist Mono", ui-monospace, monospace; font-size: var(--t-mikro); letter-spacing: .06em; text-transform: uppercase; color: var(--tekst-drugorzedny); }
-.dane dd { margin: 0; }
-
-@container (min-width: 26rem) {
-  .dane > div { grid-template-columns: 12rem 1fr; align-items: baseline; gap: var(--s4); }
-}
-
-.kontakty { display: grid; gap: var(--s3); }
-.kontakty > div { display: flex; flex-wrap: wrap; gap: var(--s1) var(--s4); align-items: baseline; }
-.kontakty dt { flex: 1 1 14rem; }
-.kontakty dd { margin: 0; font-family: "Geist Mono", ui-monospace, monospace; }
-
-/* ------------------------------------------------------------------
-   Przełącznik wyglądu. Ikony Lucide (ISC).
-   ------------------------------------------------------------------ */
 .ikona { width: 1.15rem; height: 1.15rem; display: block; }
 .przelacznik-motywu .ikona { display: none; }
 :root:not([data-motyw]) .przelacznik-motywu .ikona-system,
 :root[data-motyw="jasny"] .przelacznik-motywu .ikona-jasny,
 :root[data-motyw="ciemny"] .przelacznik-motywu .ikona-ciemny { display: block; }
 
-/* ------------------------------------------------------------------
-   Warianty szerokości
-   ------------------------------------------------------------------ */
+/* ==================================================================
+   7. Pytanie i skala odpowiedzi
+   Skala to jedna oś z punktami, a nie zestaw pól z tekstem w każdym:
+   podpis stoi pod punktem, bez ramki wokół niego.
+   ================================================================== */
+.pytanie-stem { display: block; font-size: var(--pismo-male); color: var(--tekst-drugorzedny); }
+.pytanie-tresc { display: block; font-size: var(--pismo-pytanie); font-weight: 500; line-height: 1.35; text-wrap: pretty; }
+.pytanie-stem + .pytanie-tresc { margin-block-start: var(--odstep-s); }
+
+.skala { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; }
+.stopien {
+  position: relative;
+  display: grid; justify-items: center; gap: var(--odstep-s);
+  padding-block: var(--odstep-s);
+  text-align: center;
+  cursor: pointer;
+}
+.stopien input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+/* Oś przechodząca przez punkty; skrajne stopnie rysują tylko swoją połowę. */
+.stopien::before {
+  content: ""; position: absolute; z-index: 0;
+  top: calc(var(--odstep-s) + .5625rem); left: 0; right: 0; height: 2px;
+  background: var(--obramowanie);
+}
+.stopien:first-child::before { left: 50%; }
+.stopien:last-child::before { right: 50%; }
+.stopien-punkt {
+  position: relative; z-index: 1;
+  width: 1.25rem; height: 1.25rem; border-radius: 50%;
+  border: 2px solid var(--obramowanie-mocne); background: var(--tlo-wypukle);
+}
+.stopien-etykieta { font-size: var(--pismo-male); line-height: 1.3; color: var(--tekst-drugorzedny); }
+.stopien:hover .stopien-punkt { border-color: var(--akcent); }
+.stopien:has(input:focus-visible) { outline: 2px solid var(--akcent); outline-offset: 2px; border-radius: var(--promien); }
+.stopien:has(input:checked) .stopien-punkt { border-color: var(--akcent); background: var(--akcent); }
+.stopien:has(input:checked) .stopien-etykieta { color: var(--tekst); font-weight: 600; }
+
+/* Wybór spoza skali: forma gramatyczna, zgoda na zapis. */
+.wybor {
+  display: flex; align-items: flex-start; gap: var(--odstep-m);
+  padding: var(--odstep-m);
+  border: var(--kreska) solid var(--obramowanie-mocne); border-radius: var(--promien);
+  background: var(--tlo-wypukle);
+  cursor: pointer;
+}
+.wybor:hover { border-color: var(--akcent); }
+.wybor:has(input:focus-visible) { outline: 2px solid var(--akcent); outline-offset: 2px; }
+.wybor:has(input:checked) { border-color: var(--akcent); background: var(--tlo-zaznaczone); }
+.wybor input {
+  appearance: none; flex: none;
+  width: 1.15rem; height: 1.15rem; margin: .2em 0 0;
+  display: grid; place-content: center;
+  border: 2px solid var(--obramowanie-mocne); background: var(--tlo);
+  cursor: pointer;
+}
+.wybor input[type="radio"] { border-radius: 50%; }
+.wybor input[type="checkbox"] { border-radius: var(--odstep-xs); }
+.wybor input::before { content: ""; width: .55rem; height: .55rem; background: var(--akcent); transform: scale(0); }
+.wybor input[type="radio"]::before { border-radius: 50%; }
+.wybor input:checked { border-color: var(--akcent); }
+.wybor input:checked::before { transform: scale(1); }
+.wybor input:focus-visible { outline: none; }
+
+/* Podziałka pozycji: jeden znacznik na pytanie. */
+.podzialka { display: flex; gap: 2px; height: .5rem; }
+.podzialka span { flex: 1 1 0; min-width: 2px; border-radius: 1px; background: var(--obramowanie); }
+.podzialka .odpowiedziane { background: var(--akcent); }
+.podzialka .biezace { background: var(--akcent); box-shadow: 0 0 0 2px var(--tlo-wypukle), 0 0 0 3px var(--akcent); }
+
+/* ==================================================================
+   8. Dane i wynik
+   ================================================================== */
+.dane { display: grid; gap: var(--odstep-m); }
+.dane > div { display: grid; gap: var(--odstep-xs); }
+.dane dt { font-family: "Geist Mono", ui-monospace, monospace; font-size: var(--pismo-mikro); letter-spacing: .06em; text-transform: uppercase; color: var(--tekst-drugorzedny); }
+.dane dd { margin: 0; }
+@media (min-width: 46rem) {
+  .dane > div { grid-template-columns: 13rem 1fr; align-items: baseline; gap: var(--odstep-m); }
+}
+
+.punkty { display: flex; align-items: baseline; gap: var(--odstep-s); font-family: "Geist Mono", ui-monospace, monospace; }
+.punkty b { font-size: var(--pismo-wynik); font-weight: 600; line-height: 1; letter-spacing: -.03em; }
+.punkty span { font-size: var(--pismo-male); color: var(--tekst-drugorzedny); }
+.plakietka { justify-self: start; padding: var(--odstep-xs) var(--odstep-m); border: var(--kreska) solid var(--obramowanie-mocne); border-radius: 999px; font-size: var(--pismo-male); }
+
+/* ==================================================================
+   9. Warianty szerokości
+   ================================================================== */
 @media (max-width: 52rem) {
-  .pasek-uklad { grid-template-columns: 1fr auto; row-gap: var(--s3); }
+  .pasek-uklad { grid-template-columns: 1fr auto; row-gap: var(--odstep-m); }
   .pasek-linki { grid-column: 1 / -1; grid-row: 2; }
 }
 
-@media (max-width: 40rem) {
-  main { padding-block: var(--s5) var(--s7); }
-  .karta { padding: var(--s4); }
+@media (max-width: 34rem) {
+  main { padding-block: var(--odstep-xl); }
+  .karta { padding: var(--odstep-m); }
   .akcje:not(.akcje-rozdzielone) > .btn { flex: 1 1 auto; }
+
+  /* Skala staje pionowo, oś biegnie przez punkty z boku. */
+  .skala { grid-auto-flow: row; }
+  .stopien {
+    grid-template-columns: auto 1fr; justify-items: start; align-items: center;
+    gap: var(--odstep-m); text-align: left;
+  }
+  .stopien::before { top: 0; bottom: 0; left: .5625rem; right: auto; width: 2px; height: auto; }
+  .stopien:first-child::before { top: 50%; left: .5625rem; }
+  .stopien:last-child::before { bottom: 50%; right: auto; }
 }
 
 @media (prefers-reduced-motion: reduce) {

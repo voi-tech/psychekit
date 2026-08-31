@@ -132,8 +132,8 @@ test("the last question waits for an explicit finish", async ({ page }) => {
 test("the response scale drops wording that repeats across every option", async ({ page }) => {
   await page.goto("/test/ipip-bfm-20/");
   await start(page);
-  await expect(page.getByText("Na ile trafnie to zdanie opisuje Ciebie?")).toBeVisible();
-  await expect(page.locator(".stopien-etykieta").first()).toHaveText("Całkowicie nietrafnie");
+  await expect(page.getByText("Czy to zdanie Cię opisuje?")).toBeVisible();
+  await expect(page.locator(".stopien-etykieta").first()).toHaveText("Zdecydowanie nie");
   await expect(page.getByText("mnie opisuje")).toHaveCount(0);
   await expect(page.getByRole("radio", { name: "Całkowicie nietrafnie mnie opisuje" })).toHaveCount(1);
 });

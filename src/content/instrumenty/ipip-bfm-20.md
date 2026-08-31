@@ -16,13 +16,13 @@ sources:
 optionSets:
   trafnosc:
     id: trafnosc
-    prompt: "Na ile trafnie to zdanie opisuje Ciebie?"
+    prompt: "Czy to zdanie Cię opisuje?"
     options:
-      - { id: calkowicie-nietrafnie, score: 1, label: "Całkowicie nietrafnie mnie opisuje", shortLabel: "Całkowicie nietrafnie" }
-      - { id: raczej-nietrafnie, score: 2, label: "Raczej nietrafnie mnie opisuje", shortLabel: "Raczej nietrafnie" }
-      - { id: posrednio, score: 3, label: "Trochę trafnie, a trochę nietrafnie mnie opisuje", shortLabel: "Trochę trafnie, trochę nie" }
-      - { id: raczej-trafnie, score: 4, label: "Raczej trafnie mnie opisuje", shortLabel: "Raczej trafnie" }
-      - { id: calkowicie-trafnie, score: 5, label: "Całkowicie trafnie mnie opisuje", shortLabel: "Całkowicie trafnie" }
+      - { id: calkowicie-nietrafnie, score: 1, label: "Całkowicie nietrafnie mnie opisuje", shortLabel: "Zdecydowanie nie" }
+      - { id: raczej-nietrafnie, score: 2, label: "Raczej nietrafnie mnie opisuje", shortLabel: "Raczej nie" }
+      - { id: posrednio, score: 3, label: "Trochę trafnie, a trochę nietrafnie mnie opisuje", shortLabel: "Ani tak, ani nie" }
+      - { id: raczej-trafnie, score: 4, label: "Raczej trafnie mnie opisuje", shortLabel: "Raczej tak" }
+      - { id: calkowicie-trafnie, score: 5, label: "Całkowicie trafnie mnie opisuje", shortLabel: "Zdecydowanie tak" }
 items:
   - { id: q1, text: "Jestem duszą towarzystwa.", optionSet: trafnosc }
   - { id: q2, text: "Niezbyt obchodzą mnie inni ludzie.", optionSet: trafnosc, reversed: true }

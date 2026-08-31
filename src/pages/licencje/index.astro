@@ -30,22 +30,21 @@ const tak = (value: boolean) => (value ? "Tak" : "Nie");
 const data = (value: string) => new Date(value).toLocaleDateString("pl-PL");
 ---
 <BaseLayout title="Licencje" description="Prawa do treści każdego kwestionariusza wraz ze źródłem.">
-  <div class="rytm">
-    <header class="rytm miara">
-      <p class="mikro">Licencje</p>
+  <div class="stos stos-sekcje">
+    <header class="stos miara">
       <h1>Prawa do treści kwestionariuszy</h1>
       <p>Każdy kwestionariusz ma osobny opis praw. Kwestionariusz, którego prawa nie zostały potwierdzone, nie jest udostępniany.</p>
     </header>
 
-    <div class="siatka-kart siatka-kart-szerokie">
+    <div class="siatka siatka-szeroka">
       {licenses.map((entry) => {
         const uzywajace = instruments.filter((instrument) => instrument.data.license === entry.data.id);
         const jezyk = entry.data.translation.language === "pl" ? "polska" : entry.data.translation.language;
         return (
-          <article class="karta rytm" style="--rytm: var(--s4)">
-            <div class="rytm" style="--rytm: var(--s2)">
-              <p class="mikro">{entry.data.id}</p>
-              <h2 class="tytul-karty">{uzywajace.length > 0 ? uzywajace.map((instrument) => instrument.data.name).join(", ") : "Nieużywana w tej wersji"}</h2>
+          <article class="karta stos stos-luzny">
+            <div class="stos stos-zwarty">
+              <h2 class="tytul-poboczny">{uzywajace.length > 0 ? uzywajace.map((instrument) => instrument.data.name).join(", ") : "Nieużywana w tej wersji"}</h2>
+              <p class="kod">{entry.data.id}</p>
             </div>
             <dl class="dane">
               <div><dt>Warunki</dt><dd>{KLASA[entry.data.class]}</dd></div>
@@ -56,8 +55,10 @@ const data = (value: string) => new Date(value).toLocaleDateString("pl-PL");
                 <div><dt>{label}</dt><dd>{tak(entry.data.permissions[key as keyof typeof entry.data.permissions])}</dd></div>
               ))}
             </dl>
-            {entry.data.attribution && <p class="meta">{entry.data.attribution}</p>}
-            {entry.data.notes && <p class="meta">{entry.data.notes}</p>}
+            <div class="stos stos-zwarty">
+              {entry.data.attribution && <p class="meta">{entry.data.attribution}</p>}
+              {entry.data.notes && <p class="meta">{entry.data.notes}</p>}
+            </div>
             <p><a href={entry.data.source}>Otwórz źródło</a></p>
           </article>
         );

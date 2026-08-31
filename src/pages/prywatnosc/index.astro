@@ -1,25 +1,42 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+
+const sekcje = [
+  {
+    tytul: "Co zostaje na Twoim urządzeniu",
+    tresc: "Rozpoczęty kwestionariusz zapisuje się w pamięci przeglądarki, żeby dało się go dokończyć później. Taki zapis znika po siedmiu dniach od ostatniej odpowiedzi. Ukończony wynik trafia do historii wyłącznie wtedy, gdy zaznaczysz to po wypełnieniu. Zapamiętywany jest też wybrany wygląd strony i forma, w jakiej zadawane są pytania.",
+  },
+  {
+    tytul: "Co widzi dostawca serwera",
+    tresc: "Samo otwarcie strony przekazuje dostawcy serwera zwykłe dane połączenia: adres sieciowy, informację o przeglądarce i adres otwieranej strony. Nie trafiają tam żadne odpowiedzi ani wyniki.",
+  },
+  {
+    tytul: "Kopiowanie wyniku",
+    tresc: "Przycisk kopiowania przygotowuje tekst w Twojej przeglądarce. Jeśli wkleisz go do zewnętrznej usługi, na przykład do asystenta opartego na sztucznej inteligencji, dane opuszczą PsycheKit i zaczną podlegać zasadom tej usługi.",
+  },
+  {
+    tytul: "Wspólne urządzenie",
+    tresc: "Brak serwera nie chroni przed dostępem osoby, która korzysta z tego samego urządzenia. Jeśli dzielisz je z kimś, nie zapisuj wyniku w historii.",
+  },
+];
 ---
 <BaseLayout title="Prywatność" description="Co PsycheKit zapisuje, gdzie i na jak długo.">
-  <article class="rytm miara">
-    <p class="mikro">Prywatność</p>
-    <h1>Odpowiedzi i wyniki pozostają w Twojej przeglądarce</h1>
-    <p>PsycheKit nie przesyła ich nigdzie i nie przechowuje na serwerze.</p>
+  <article class="stos stos-luzny miara">
+    <div class="stos">
+      <h1>Odpowiedzi i wyniki pozostają w Twojej przeglądarce</h1>
+      <p>PsycheKit nie przesyła ich nigdzie i nie przechowuje na serwerze.</p>
+    </div>
 
-    <h2>Co zostaje na Twoim urządzeniu</h2>
-    <p>Rozpoczęty kwestionariusz zapisuje się w pamięci przeglądarki, żeby dało się go dokończyć później. Taki zapis znika po siedmiu dniach od ostatniej odpowiedzi. Ukończony wynik trafia do historii wyłącznie wtedy, gdy zaznaczysz to po wypełnieniu. Zapamiętywany jest też wybrany wygląd strony i forma, w jakiej zadawane są pytania.</p>
+    {sekcje.map((sekcja) => (
+      <section class="stos">
+        <h2>{sekcja.tytul}</h2>
+        <p>{sekcja.tresc}</p>
+      </section>
+    ))}
 
-    <h2>Co widzi dostawca serwera</h2>
-    <p>Samo otwarcie strony przekazuje dostawcy serwera zwykłe dane połączenia: adres sieciowy, informację o przeglądarce i adres otwieranej strony. Nie trafiają tam żadne odpowiedzi ani wyniki.</p>
-
-    <h2>Kopiowanie wyniku</h2>
-    <p>Przycisk kopiowania przygotowuje tekst w Twojej przeglądarce. Jeśli wkleisz go do zewnętrznej usługi, na przykład do asystenta opartego na sztucznej inteligencji, dane opuszczą PsycheKit i zaczną podlegać zasadom tej usługi.</p>
-
-    <h2>Wspólne urządzenie</h2>
-    <p>Brak serwera nie chroni przed dostępem osoby, która korzysta z tego samego urządzenia. Jeśli dzielisz je z kimś, nie zapisuj wyniku w historii.</p>
-
-    <h2>Usuwanie danych</h2>
-    <p>Każdy zapisany wynik możesz usunąć pojedynczo lub wszystkie naraz na stronie <a href="/historia/">Historia</a>. Wyczyszczenie danych strony w ustawieniach przeglądarki usuwa wszystko, co PsycheKit zapisał.</p>
+    <section class="stos">
+      <h2>Usuwanie danych</h2>
+      <p>Każdy zapisany wynik możesz usunąć pojedynczo lub wszystkie naraz na stronie <a href="/historia/">Historia</a>. Wyczyszczenie danych strony w ustawieniach przeglądarki usuwa wszystko, co PsycheKit zapisał.</p>
+    </section>
   </article>
 </BaseLayout>

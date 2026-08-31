@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Gender, Instrument, OptionSet } from "@/domain/instrument";
 import { resolveText } from "@/domain/instrument";
 import { CURRENT_RESULT_KEY, type ResultSnapshot } from "@/domain/result";
@@ -10,7 +10,6 @@ import { APP_VERSION } from "@/version";
 type Stage = "forma" | "pytania" | "zapis";
 
 const GENDER_LABELS: Record<Gender, string> = { m: "męska", f: "żeńska" };
-const RYTM_ZWARTY = { "--rytm": "var(--s2)" } as CSSProperties;
 /** Krótka pauza po wyborze, żeby zaznaczenie zdążyło się pokazać przed przejściem dalej. */
 const PAUZA_PRZED_PRZEJSCIEM = 260;
 
@@ -54,8 +53,8 @@ export default function TestRunner({ instrument }: { instrument: Instrument }) {
 
   if (!ready) {
     return (
-      <section className="panel rytm miara-formularz" aria-live="polite">
-        <div className="rytm" style={RYTM_ZWARTY}>
+      <section className="karta stos miara-szeroka" aria-live="polite">
+        <div className="stos stos-zwarty">
           <h1>{instrument.name}</h1>
           <p className="kod">{instrument.code}</p>
         </div>
@@ -145,37 +144,37 @@ export default function TestRunner({ instrument }: { instrument: Instrument }) {
   const goBack = () => { anulujPrzejscie(); setError(""); setIndex(Math.max(0, index - 1)); };
 
   return (
-    <section className="panel rytm miara-formularz" aria-labelledby="tytul-kwestionariusza">
-      <div className="rytm" style={{ "--rytm": "var(--s1)" } as CSSProperties}>
-        <p className="mikro">Pytanie {index + 1} z {total}</p>
-        <h1 id="tytul-kwestionariusza" className="tytul-cichy">{instrument.name}</h1>
-        <p className="kod">{instrument.code}</p>
+    <section className="karta stos stos-luzny miara-szeroka" aria-labelledby="tytul-kwestionariusza">
+      <div className="stos">
+        <div className="stos stos-zwarty">
+          <p className="mikro">Pytanie {index + 1} z {total}</p>
+          <h1 id="tytul-kwestionariusza" className="tytul-poboczny">{instrument.name}</h1>
+        </div>
+        <div
+          className="podzialka"
+          role="progressbar"
+          aria-label="Postęp wypełniania"
+          aria-valuemin={1}
+          aria-valuemax={total}
+          aria-valuenow={index + 1}
+        >
+          {instrument.items.map((candidate, position) => (
+            <span
+              key={candidate.id}
+              aria-hidden="true"
+              className={position === index ? "biezace" : responses[candidate.id] ? "odpowiedziane" : undefined}
+            />
+          ))}
+        </div>
       </div>
 
-      <div
-        className="podzialka"
-        role="progressbar"
-        aria-label="Postęp wypełniania"
-        aria-valuemin={1}
-        aria-valuemax={total}
-        aria-valuenow={index + 1}
-      >
-        {instrument.items.map((candidate, position) => (
-          <span
-            key={candidate.id}
-            aria-hidden="true"
-            className={position === index ? "biezace" : responses[candidate.id] ? "odpowiedziane" : undefined}
-          />
-        ))}
-      </div>
-
-      <fieldset className="pytanie">
-        <legend className="pytanie-legenda">
+      <div className="stos stos-luzny" role="radiogroup" aria-labelledby="tresc-pytania">
+        <p id="tresc-pytania">
           {optionSet.prompt && <span className="pytanie-stem">{optionSet.prompt}</span>}
           <span className="pytanie-tresc">{resolveText(item.text, gender)}</span>
-        </legend>
+        </p>
         <Skala optionSet={optionSet} itemId={item.id} value={responses[item.id]} onChoose={chooseOption} />
-      </fieldset>
+      </div>
 
       {error && <p role="alert" className="notice danger">{error}</p>}
 
@@ -184,18 +183,18 @@ export default function TestRunner({ instrument }: { instrument: Instrument }) {
         <button className="btn" type="button" onClick={goNext}>{isLast ? "Pokaż wynik" : "Dalej"}</button>
       </div>
 
-      <div className="meta stopka-panelu">
-        <span>
+      <div className="stopka stos stos-zwarty meta">
+        <p>
           Forma {GENDER_LABELS[gender]}
           <button className="btn btn-tekst" type="button" onClick={() => { anulujPrzejscie(); setStage("forma"); }}>Zmień formę</button>
-        </span>
-        <span>{isLast ? "To ostatnie pytanie." : "Wybór odpowiedzi przenosi do następnego pytania."} Rozpoczęty kwestionariusz zapisuje się na tym urządzeniu i wygasa po siedmiu dniach.</span>
+        </p>
+        <p>{isLast ? "To ostatnie pytanie." : "Wybór odpowiedzi przenosi do następnego pytania."} Rozpoczęty kwestionariusz zapisuje się na tym urządzeniu i wygasa po siedmiu dniach.</p>
       </div>
     </section>
   );
 }
 
-/** Stopnie skali stoją obok siebie, bo odpowiedzi tworzą uporządkowany ciąg, a nie zbiór możliwości. */
+/** Odpowiedzi tworzą uporządkowany ciąg, więc stoją jako punkty na jednej osi, a nie jako pola z tekstem. */
 function Skala({ optionSet, itemId, value, onChoose }: {
   optionSet: OptionSet;
   itemId: string;
@@ -203,7 +202,7 @@ function Skala({ optionSet, itemId, value, onChoose }: {
   onChoose: (optionId: string) => void;
 }) {
   return (
-    <div className="skala" style={{ "--stopnie": optionSet.options.length } as CSSProperties}>
+    <div className="skala">
       {optionSet.options.map((option) => (
         <label className="stopien" key={option.id}>
           <input
@@ -214,7 +213,7 @@ function Skala({ optionSet, itemId, value, onChoose }: {
             onChange={() => onChoose(option.id)}
             aria-label={option.label}
           />
-          <span className="stopien-znacznik" aria-hidden="true" />
+          <span className="stopien-punkt" aria-hidden="true" />
           <span className="stopien-etykieta" aria-hidden="true">{option.shortLabel ?? option.label}</span>
         </label>
       ))}
@@ -229,26 +228,26 @@ function GenderChoice({ instrument, gender, onGenderChange, onStart }: {
   onStart: () => void;
 }) {
   return (
-    <section className="panel rytm miara-formularz" aria-labelledby="tytul-formy">
-      <div className="rytm" style={RYTM_ZWARTY}>
+    <section className="karta stos stos-luzny miara-szeroka" aria-labelledby="tytul-formy">
+      <div className="stos stos-zwarty">
         <h1 id="tytul-formy">{instrument.name}</h1>
         <p className="kod">{instrument.code}</p>
         <p>{instrument.subtitle}</p>
         <p className="meta">{instrument.items.length} pytań · około {instrument.estimatedMinutes} minut</p>
       </div>
 
-      <fieldset className="opcje">
-        <legend>W jakiej formie mają być zadawane pytania?</legend>
+      <div className="stos" role="radiogroup" aria-labelledby="pytanie-o-forme">
+        <p className="pytanie-tresc" id="pytanie-o-forme">W jakiej formie mają być zadawane pytania?</p>
         {(["m", "f"] as Gender[]).map((value) => (
-          <label className="opcja" key={value}>
+          <label className="wybor" key={value}>
             <input type="radio" name="forma" value={value} checked={gender === value} onChange={() => onGenderChange(value)} />
             Forma {GENDER_LABELS[value]}
           </label>
         ))}
-      </fieldset>
-      <p className="meta">Wybór wpływa tylko na brzmienie pytań i zostaje zapamiętany na tym urządzeniu.</p>
+        <p className="meta">Wybór wpływa tylko na brzmienie pytań i zostaje zapamiętany na tym urządzeniu.</p>
+      </div>
 
-      <div className="notice">
+      <div className="notice stos stos-zwarty">
         <p>{instrument.disclaimer}</p>
         {instrument.adaptationNotice && <p className="meta">{instrument.adaptationNotice}</p>}
       </div>
@@ -274,16 +273,18 @@ function SavePrompt({ snapshot }: { snapshot: ResultSnapshot }) {
   };
 
   return (
-    <section className="panel rytm miara-formularz" aria-live="polite">
-      <div className="rytm" style={RYTM_ZWARTY}>
+    <section className="karta stos stos-luzny miara-szeroka" aria-live="polite">
+      <div className="stos stos-zwarty">
         <h1>Wynik jest gotowy</h1>
         <p className="kod">{snapshot.name} · {snapshot.code}</p>
       </div>
-      <p>Czy zapisać ten wynik w historii na tym urządzeniu? Zapisany wynik zostaje tutaj, dopóki go nie usuniesz. Bez zapisu zobaczysz go tylko teraz.</p>
-      <label className="opcja">
-        <input type="checkbox" checked={saveChoice} onChange={(event) => setSaveChoice(event.target.checked)} />
-        Zapisz wynik w historii
-      </label>
+      <div className="stos">
+        <p>Czy zapisać ten wynik w historii na tym urządzeniu? Zapisany wynik zostaje tutaj, dopóki go nie usuniesz. Bez zapisu zobaczysz go tylko teraz.</p>
+        <label className="wybor">
+          <input type="checkbox" checked={saveChoice} onChange={(event) => setSaveChoice(event.target.checked)} />
+          Zapisz wynik w historii
+        </label>
+      </div>
       <div className="akcje">
         <button className="btn" type="button" disabled={busy} onClick={() => void finishUp(saveChoice)}>Przejdź do wyniku</button>
         <button className="btn btn-drugi" type="button" disabled={busy} onClick={() => void finishUp(false)}>Pokaż bez zapisywania</button>
